@@ -1,0 +1,57 @@
+
+#' @title wTO.aux.each
+#' @description wTO.aux.each calculte the wTO for each one of the resamplings.
+#' @keywords internal
+#' @importFrom stats na.exclude
+#' @param n Number of bootstraps / reshuffles to be run for the estimatives of the "Threshold" or "pval".
+#' @param Data data.frame containing the count / expression data for the correlation.
+#' @param Overlap Nodes of interested, where the Overlapping weights will be computed.
+#' @param method Type of the correlation that should be used. "s" / "spearman" will compute the rank spearman correlation, "p" / "pearson" will compute the linear correlation. If no value is given, the default is to use "s".
+#' @param method_resampling method of the resampling. Bootstrap or Reshuffle. Bootstrap null hypothesis is that the wTO is random, and Reshuffle tests if the wTO is equal to zero.
+
+
+
+wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag){
+  dfExpression = Data
+  GRF = unique(Overlap)
+  if(method_resampling == "Bootstrap"){
+    real_Genes = sample(dfExpression, replace = T)
+  }
+  if(method_resampling == "BlockBootstrap"){
+    nsampl = ifelse (ncol(dfExpression) %% lag == 0, ncol(dfExpression) %/% lag, ncol(dfExpression) %/% lag +1)
+    Y = sample(1:nsampl, size = nsampl, replace =  T)
+    Vect = Y*lag
+    i = lag - 1
+    while( i > 0){
+      Vect = cbind(Vect , Y*lag - i)
+      i = i - 1
+    }
+
+    SAMPLES = c(Vect)
+    SAMPLES[SAMPLES > ncol(dfExpression)] <- NA
+    SAMPLE = stats::na.exclude(SAMPLES)
+    real_Genes =  dfExpression[,SAMPLE]
+    row.names(real_Genes)=row.names(dfExpression)
+
+  }
+  else if(method_resampling == "Reshuffle" ){
+    real_Genes = as.data.frame(lapply(1:ncol(dfExpression), sample_ind, dfExpression = dfExpression))
+    names(real_Genes)=names(dfExpression)
+    row.names(real_Genes)=row.names(dfExpression)
+  }
+
+  Saving = wTO::Correlation.Overlap(Data = real_Genes, Overlap = GRF, method = method)
+  WTO_abs = wTO::wTO(A = Saving[[2]],  sign = "abs")
+  WTO_sig = wTO::wTO(A = Saving[[2]],  sign = "sign")
+
+  message(".", appendLF = F)
+  Cor_star = wTO.in.line(WTO_sig)
+  Cor_star_abs = wTO.in.line(WTO_abs)
+  OUT = data.frame(wTO = Cor_star$wTO)
+  rownames(OUT) = row.names(Cor_star)
+  OUT2 = data.frame(wTO = Cor_star_abs$wTO)
+  rownames(OUT2) = row.names(Cor_star_abs)
+  return(list( Cor_star= OUT, Cor_star_abs = OUT2))
+}
+
+
