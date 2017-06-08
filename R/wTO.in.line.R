@@ -3,6 +3,7 @@
 #' @param d correlation matrix to be converted into the line format.
 #' @description Transforms a correlation matrix into the line format.
 #' @return the wTO matrix into a data.frame: Node1, Node2 and wTO.
+#' @importFrom data.table as.data.table
 #' @export
 #'
 
@@ -18,10 +19,10 @@ wTO.in.line <-function(d){
 
 
   M.sup <- d[upper.tri(d)]
-  corre=as.data.frame(cbind(M.Genes.1 ,M.Genes.2, M.sup))
+  corre=data.table::as.data.table(cbind(M.Genes.1 ,M.Genes.2, M.sup))
   names(corre)<-c("Node.1", "Node.2", "wTO")
-  row.names(corre)= paste(M.Genes.1, M.Genes.2, sep = "<->")
-  corre$wTO = as.numeric(as.matrix(corre$wTO))
+  # row.names(corre)= paste(M.Genes.1, M.Genes.2, sep = "<->")
+  # corre$wTO = as.numeric(as.matrix(corre$wTO))
 
   return(corre)
 }

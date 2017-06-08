@@ -13,19 +13,19 @@
 Cut.off = function(wTO_value, type){
   `%ni%` <- Negate(`%in%`)
   star_cors = wTO_value[,-c(1:3)]
-  cors_real = wTO_value[, 1:3]
-  Star_density = stats::density(as.vector(t(star_cors)))
-  Real_density = stats::density(as.vector(cors_real$wTO_0))
+  cors_real = wTO_value[, c(1:3)]
+  Star_density = stats::density(as.numeric(as.matrix(star_cors)))
+  Real_density = stats::density(as.numeric(cors_real$`0`))
 
-  minmax_star = cbind(min(as.vector(t(star_cors))), max(as.vector(t(star_cors))))
-  quantile_real = stats::quantile(as.vector(cors_real$wTO_0), c(0.001,
+  minmax_star = cbind(min(as.numeric(t(star_cors))), max(as.numeric(t(star_cors))))
+  quantile_real = stats::quantile(as.numeric(cors_real$`0`), c(0.001,
                                                          0.025,
                                                          0.10,
                                                          0.9,
                                                          0.975,
                                                          0.999
                                                          ))
-  quantile_star = stats::quantile(as.vector(t(star_cors)), c(0.001,
+  quantile_star = stats::quantile(as.numeric(t(star_cors)), c(0.001,
                                                          0.025,
                                                          0.10,
                                                          0.9,
@@ -62,11 +62,7 @@ Cut.off = function(wTO_value, type){
                                      "black",
 
                                     "yellow", "orange", "red"), bty = "n", cex = 0.5  )
-
-# print(paste("Results for", type))
-#   print(paste0("The thresholds for the resampling are:"))
-#   print(minmax_star)
-#   print(paste0("The quantiles for the real values are:"))
-#   print(quantile_real)
+# 
+# message("Quantiles")
   return(list(Empirical.Quantile = quantile_star, Quantile = quantile_real))
 }

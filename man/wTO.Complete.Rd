@@ -56,6 +56,6 @@ Overlap = ExampleGRF$x, method_resampling = "Reshuffle")
 wTO.Complete( k =1, n = 20, Data = ExampledfExpression, method = "s",
 Overlap = ExampleGRF$x, method_resampling = "BlockBootstrap", lag = 2)
  }
-wTO.Complete( k =2, n = 10, Data = ExampledfExpression,
+wTO.Complete( k =2, n = 8, Data = ExampledfExpression,
 Overlap = ExampleGRF$x, method = "p")
 }

@@ -4,7 +4,7 @@
 \name{ExampledfExpression}
 \alias{ExampledfExpression}
 \title{ExampledfExpression}
-\format{data.frame 268 lines, 18 columns.}
+\format{data.frame 1000 lines, 18 columns.}
 \usage{
 ExampledfExpression
 }

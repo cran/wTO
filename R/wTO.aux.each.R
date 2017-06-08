@@ -3,12 +3,12 @@
 #' @description wTO.aux.each calculte the wTO for each one of the resamplings.
 #' @keywords internal
 #' @importFrom stats na.exclude
+#' @importFrom data.table setkeyv
 #' @param n Number of bootstraps / reshuffles to be run for the estimatives of the "Threshold" or "pval".
 #' @param Data data.frame containing the count / expression data for the correlation.
 #' @param Overlap Nodes of interested, where the Overlapping weights will be computed.
 #' @param method Type of the correlation that should be used. "s" / "spearman" will compute the rank spearman correlation, "p" / "pearson" will compute the linear correlation. If no value is given, the default is to use "s".
 #' @param method_resampling method of the resampling. Bootstrap or Reshuffle. Bootstrap null hypothesis is that the wTO is random, and Reshuffle tests if the wTO is equal to zero.
-
 
 
 wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag){
@@ -40,18 +40,19 @@ wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag){
     row.names(real_Genes)=row.names(dfExpression)
   }
 
-  Saving = wTO::Correlation.Overlap(Data = real_Genes, Overlap = GRF, method = method)
-  WTO_abs = wTO::wTO(A = Saving[[2]],  sign = "abs")
-  WTO_sig = wTO::wTO(A = Saving[[2]],  sign = "sign")
+
+  Saving = Correlation.Overlap(Data = real_Genes, Overlap = GRF, method = method)
+  WTO_abs = wTO(A = Saving[[2]],  sign = "abs")
+  WTO_sig = wTO(A = Saving[[2]],  sign = "sign")
 
   message(".", appendLF = F)
   Cor_star = wTO.in.line(WTO_sig)
   Cor_star_abs = wTO.in.line(WTO_abs)
-  OUT = data.frame(wTO = Cor_star$wTO)
-  rownames(OUT) = row.names(Cor_star)
-  OUT2 = data.frame(wTO = Cor_star_abs$wTO)
-  rownames(OUT2) = row.names(Cor_star_abs)
-  return(list( Cor_star= OUT, Cor_star_abs = OUT2))
+  names(Cor_star) = c ("Node.1", "Node.2", "wTo_sign")
+  names(Cor_star_abs) = c ("Node.1", "Node.2", "wTo_abs")
+  data.table::setkeyv(Cor_star, c("Node.1", "Node.2"))
+  data.table::setkeyv(Cor_star_abs, c("Node.1", "Node.2"))
+  
+  return(Cor_star[Cor_star_abs])
 }
-
 

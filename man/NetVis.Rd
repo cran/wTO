@@ -4,13 +4,21 @@
 \alias{NetVis}
 \title{NetVis}
 \usage{
-NetVis(input_vis, cutoff = list(kind = "Threshold", value = 0.5),
-  layout = NULL, smooth.edges = T, path = NULL, Cluster = F,
-  legend = T, shape = list(shape = "triangle", names = NULL),
+NetVis(Node.1, Node.2, wTO, pval, padj, cutoff = list(kind = "Threshold",
+  value = 0.5), layout = NULL, smooth.edges = T, path = NULL,
+  Cluster = F, legend = T, shape = list(shape = "triangle", names = NULL),
   manipulation = F)
 }
 \arguments{
-\item{input_vis}{Network to be plotted. It's usually an output from the wTO.Complete or Consensus.}
+\item{Node.1}{Names of the Nodes.1 that are connected to the Nodes.2. It's the output from wTO.Complete or Consensus.}
+
+\item{Node.2}{Names of the Nodes.2 that are connected to the Nodes.1. It's the output from wTO.Complete or Consensus.}
+
+\item{wTO}{weight of the links, the wTO output from wTO.Complete or wTO.Consensus.}
+
+\item{pval}{p-values for the wTO value. By default it is NULL.}
+
+\item{padj}{Adjusted p-values for the wTO value. By default it is NULL.}
 
 \item{cutoff}{It's a list containing the kind of cutoff to be used (pval, Threshold or pval.adj)and it's value. Example: cutoff= list(kind = "Threshold", value = 0.5)}
 
@@ -33,23 +41,29 @@ Given a set of Nodes and the weight of the edges, a cutoff for the edges, it dra
 }
 \examples{
 
- EXAMPLE =  wTO.Complete( k =2, n = 10, Data = ExampledfExpression,
+ X =  wTO.Complete( k =2, n = 8, Data = ExampledfExpression,
  Overlap = ExampleGRF$x, method = "p")
 # Plot with the default aguments.
- x = NetVis(EXAMPLE$wTO, cutoff= list(kind = "Threshold", value = 0.5))
- x$network
+ NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
+ wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
+ padj = X$wTO$pval_sign)
 
 \dontrun{
 # Plotting just the edges with p-value < 0.05, with straight edges, nodes clustered,
 # no legend and mapipulation of the graph enabled.
- x = NetVis(EXAMPLE$wTO, cutoff= list(kind = "pval", value = 0.05),
+  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
+ wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
+ padj = X$wTO$pval_sign,
+  cutoff= list(kind = "pval", value = 0.05),
   smooth.edges = FALSE,
  Cluster = TRUE, legend = FALSE, manipulation = TRUE)
 # Plotting just the edges with wTO > 0.50, no legend and the nodes:
 # "ZNF738", "ZNF677" with triagle shape,
 # no legend and mapipulation of the graph enabled.
- x = NetVis(EXAMPLE$wTO, cutoff= list(kind = "Threshold", value = 0.5),legend = FALSE,
+ NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
+ wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
+ padj = X$wTO$pval_sign, cutoff= list(kind = "Threshold", value = 0.5),legend = FALSE,
  shape = list(shape = "triangle", names = c("ZNF738", "ZNF677")))
- x$network
+ 
  }
 }

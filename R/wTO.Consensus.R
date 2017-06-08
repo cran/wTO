@@ -8,17 +8,17 @@
 #' @importFrom plyr join_all
 
 #' @examples
-#'
-#' EXAMPLE =  wTO.Complete( k =2, n = 10, Data = ExampledfExpression,
-#' Overlap = ExampleGRF$x, method = "p")
-#'
-#' \dontrun{# Selection of only the significative ones for the Consensus.
-#' # This is just a toy example. It does not make sense to make a consensus
-#' # network out of the |wTO| and wTO.}
-#'  Ex_k1_cor_p_boot_p005_sig = subset(EXAMPLE$wTO, EXAMPLE$wTO$pval < 0.05)
-#'  Ex_k1_cor_p_boot_p005_abs = subset(EXAMPLE$abs.wTO, EXAMPLE$abs.wTO$pval < 0.05)
-#' \dontrun{# Constructing the consensus network}
-#' CONS = wTO.Consensus(data = list(Ex_k1_cor_p_boot_p005_sig, Ex_k1_cor_p_boot_p005_abs))
+#' ### Do not run
+#' ### EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
+#' ### Overlap = ExampleGRF$x, method = "p")
+#' ### Do not run
+#' ### NetVis(EXAMPLE$wTO, cutoff= list(kind = "Threshold", value = 0.55),
+#' ### layout = "layout_in_circle")
+#' ### Selection of only the significative ones for the Consensus
+#' ### Ex_k1_cor_p_boot_p005_sig = subset(EXAMPLE$wTO, EXAMPLE$wTO$pval < 0.05)
+#' ### Ex_k1_cor_p_boot_p005_abs = subset(EXAMPLE$abs.wTO, EXAMPLE$abs.wTO$pval < 0.05)
+#' ### Constructing the consensus network
+#' #CONS = wTO.Consensus(data = list(Ex_k1_cor_p_boot_p005_sig, Ex_k1_cor_p_boot_p005_abs))
 
 wTO.Consensus = function(data){
   if (!is.list(data)){
