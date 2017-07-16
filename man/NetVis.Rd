@@ -4,8 +4,8 @@
 \alias{NetVis}
 \title{NetVis}
 \usage{
-NetVis(Node.1, Node.2, wTO, pval, padj, cutoff = list(kind = "Threshold",
-  value = 0.5), layout = NULL, smooth.edges = T, path = NULL,
+NetVis(Node.1, Node.2, wTO, pval = NULL, padj = NULL, cutoff = list(kind =
+  "Threshold", value = 0.5), layout = NULL, smooth.edges = T, path = NULL,
   Cluster = F, legend = T, shape = list(shape = "triangle", names = NULL),
   manipulation = F)
 }
@@ -41,12 +41,12 @@ Given a set of Nodes and the weight of the edges, a cutoff for the edges, it dra
 }
 \examples{
 
- X =  wTO.Complete( k =2, n = 8, Data = ExampledfExpression,
- Overlap = ExampleGRF$x, method = "p")
+ X =  wTO.Complete( k =1, n = 5, Data = ExampledfExpression,
+ Overlap = ExampleGRF$x, method = "p",  plot = FALSE)
 # Plot with the default aguments.
  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
- wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
- padj = X$wTO$pval_sign)
+ wTO = X$wTO$wTO_sign, cutoff = list(kind =
+"Threshold", value = 0.50))
 
 \dontrun{
 # Plotting just the edges with p-value < 0.05, with straight edges, nodes clustered,

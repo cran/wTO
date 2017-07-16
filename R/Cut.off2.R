@@ -12,57 +12,72 @@
 
 Cut.off = function(wTO_value, type){
   `%ni%` <- Negate(`%in%`)
-  star_cors = wTO_value[,-c(1:3)]
-  cors_real = wTO_value[, c(1:3)]
-  Star_density = stats::density(as.numeric(as.matrix(star_cors)))
-  Real_density = stats::density(as.numeric(cors_real$`0`))
-
-  minmax_star = cbind(min(as.numeric(t(star_cors))), max(as.numeric(t(star_cors))))
-  quantile_real = stats::quantile(as.numeric(cors_real$`0`), c(0.001,
-                                                         0.025,
-                                                         0.10,
-                                                         0.9,
-                                                         0.975,
-                                                         0.999
-                                                         ))
-  quantile_star = stats::quantile(as.numeric(t(star_cors)), c(0.001,
-                                                         0.025,
-                                                         0.10,
-                                                         0.9,
-                                                         0.975,
-                                                         0.999
-  ))
-
+  wTO_value = plyr::arrange(wTO_value, wTO_value$Var1)
+  wTO_value[is.na(wTO_value)]<- 0
+  wTO_value$relstar = wTO_value[,2]/sum(wTO_value[,2], na.rm = T)
+  wTO_value$relreal = wTO_value[,3]/sum(wTO_value[,3], na.rm = T)
+  
+  
+  quantile.from.freq <- function(vals,freq,quant) {
+    ord <- order(vals)
+    cs <- cumsum(freq[ord])
+    
+    if(length(which(cs<quant)) > 0){
+      return(vals[max(which(cs<quant))+1])}
+    if(length(which(cs<quant)) == 0){
+      return(min(vals))
+    }
+  }
+  
+  
+  wTO_value$Var1 = as.numeric(as.matrix(wTO_value$Var1))
+  quantile_star = data.frame( quantile.from.freq(wTO_value$Var1, wTO_value$relstar, 0.001),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relstar, 0.025),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relstar, 0.1),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relstar, 0.9),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relstar, 0.975),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relstar, 0.999))
+  
+  quantile_real = data.frame(quantile.from.freq(wTO_value$Var1, wTO_value$relreal, 0.001),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relreal, 0.025),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relreal, 0.1),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relreal, 0.9),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relreal, 0.975),
+                        quantile.from.freq(wTO_value$Var1, wTO_value$relreal, 0.999))
+  
+  
+  names(quantile_real)= names(quantile_star) = c("0.1%", "2.5%", "10%", "90%", "97.5%", "99.9%")
+  
   graphics::par(xpd=FALSE)
-  graphics::plot(Star_density$x, Star_density$y, type = "l",
-       xlim = c(floor(min (Star_density$x, Real_density$x) ),1),
-       main = type,
-       ylim = c(0, max(Star_density$y, Real_density$y)), axes = F,
-       xlab = "wTO", ylab = "Density", col.main = "steelblue2", col.lab = "steelblue2")
-  graphics::lines(Real_density$x, Real_density$y, type = "l", col = "violet")
+  graphics::plot(wTO_value$relstar~ wTO_value$Var1, type = "l",
+                 xlim = c(floor(min (wTO_value$Var1) ),1),
+                 main = type,
+                 ylim = c(0, max(wTO_value$relstar)), axes = F,
+                 xlab = "wTO", ylab = "Density", col.main = "steelblue2", col.lab = "steelblue2")
+  graphics::lines(wTO_value$Var1, wTO_value$relreal, type = "l", col = "violet")
   graphics::abline(h = 0, col = "gray", lty = 4)
-
-
+  
+  
   graphics::abline(v = c(quantile_real), col = c("red", "orange", "yellow", "yellow", "orange", "red"
-                                                 ), lty = 2)
-
+  ), lty = 2)
+  
   graphics::axis(1, las = 1, cex.axis = 0.6, col = "steelblue",
-
+                 
                  col.ticks = "steelblue3", col.axis = "steelblue")
   graphics::axis(2, las = 1, cex.axis = 0.6, col = "steelblue",col.ticks = "steelblue3", col.axis = "steelblue")
   graphics::par(xpd=T)
-  graphics::legend(c(0.9,max(Star_density$y)), c("wTO - Data set",
-                                 "wTO - Reshuffle",
-
-                                 "99.9%",
-                                 "95%",
-                                 "80%"),
+  graphics::legend(c(0.9,max(wTO_value$relstar)), c("wTO - Data set",
+                                                    "wTO - Reshuffle",
+                                                    
+                                                    "99.9%",
+                                                    "95%",
+                                                    "80%"),
                    inset=c(-0.8,0),lwd = 2,
                    lty = 1, col = c("violet",
-                                     "black",
-
+                                    "black",
+                                    
                                     "yellow", "orange", "red"), bty = "n", cex = 0.5  )
-# 
-# message("Quantiles")
+  # 
+  # message("Quantiles")
   return(list(Empirical.Quantile = quantile_star, Quantile = quantile_real))
 }

@@ -16,8 +16,8 @@ A matrix containing the wTO values.
 }
 \description{
 Calculates the weighted topologycal overlap (wTO)
-between a set of Nodes and the Overlapping nodes. This function implements the method from \cite{nowick2009differences}.
+between a set of Nodes and the Overlapping nodes. This function implements the method from Nowick (2009).
 }
 \references{
-\url{http://www.pnas.org/content/106/52/22358.full.pdf}
+Katja Nowick, Tim Gernat, Eivind Almaas and Lisa Stubbs (2009) <doi:10.1073/pnas.0911376106>
 }

@@ -12,13 +12,11 @@
 
 
 wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag){
-  dfExpression = Data
-  GRF = unique(Overlap)
   if(method_resampling == "Bootstrap"){
-    real_Genes = sample(dfExpression, replace = T)
+    real_Genes = sample(Data, replace = T)
   }
   if(method_resampling == "BlockBootstrap"){
-    nsampl = ifelse (ncol(dfExpression) %% lag == 0, ncol(dfExpression) %/% lag, ncol(dfExpression) %/% lag +1)
+    nsampl = ifelse (ncol(Data) %% lag == 0, ncol(Data) %/% lag, ncol(Data) %/% lag +1)
     Y = sample(1:nsampl, size = nsampl, replace =  T)
     Vect = Y*lag
     i = lag - 1
@@ -28,24 +26,24 @@ wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag){
     }
 
     SAMPLES = c(Vect)
-    SAMPLES[SAMPLES > ncol(dfExpression)] <- NA
+    SAMPLES[SAMPLES > ncol(Data)] <- NA
     SAMPLE = stats::na.exclude(SAMPLES)
-    real_Genes =  dfExpression[,SAMPLE]
-    row.names(real_Genes)=row.names(dfExpression)
+    real_Genes =  Data[,SAMPLE]
+    row.names(real_Genes)=row.names(Data)
 
   }
   else if(method_resampling == "Reshuffle" ){
-    real_Genes = as.data.frame(lapply(1:ncol(dfExpression), sample_ind, dfExpression = dfExpression))
-    names(real_Genes)=names(dfExpression)
-    row.names(real_Genes)=row.names(dfExpression)
+    real_Genes = as.data.frame(lapply(1:ncol(Data), FUN = sample_ind, dfExpression = Data))
+    names(real_Genes)=names(Data)
+    row.names(real_Genes)=row.names(Data)
   }
 
 
-  Saving = Correlation.Overlap(Data = real_Genes, Overlap = GRF, method = method)
-  WTO_abs = wTO(A = Saving[[2]],  sign = "abs")
-  WTO_sig = wTO(A = Saving[[2]],  sign = "sign")
+  Saving = Correlation.Overlap(Data = real_Genes, Overlap = Overlap, method = method)
+  WTO_abs = wTO(A = Saving,  sign = "abs")
+  WTO_sig = wTO(A = Saving,  sign = "sign")
 
-  message(".", appendLF = F)
+  # message(".", appendLF = F)
   Cor_star = wTO.in.line(WTO_sig)
   Cor_star_abs = wTO.in.line(WTO_abs)
   names(Cor_star) = c ("Node.1", "Node.2", "wTo_sign")
