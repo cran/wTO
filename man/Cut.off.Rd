@@ -4,7 +4,7 @@
 \alias{Cut.off}
 \title{Cut.off}
 \usage{
-Cut.off(wTO_value, type)
+Cut.off(wTO_value, type, plot)
 }
 \arguments{
 \item{wTO_value}{is the table returned by the wTO with all the simulated values.}

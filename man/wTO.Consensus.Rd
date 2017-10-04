@@ -5,15 +5,15 @@
 \alias{Consensus}
 \title{wTO.Consensus}
 \usage{
-wTO.Consensus(data)
+wTO.Consensus(data, full = FALSE)
 }
 \arguments{
 \item{data}{list of data.frame containing the "Node.1", "Node.2" and "wTO".}
+
+\item{full}{Missing links should be considered zero?}
 }
 \description{
 Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined.
-#@import stringr
-#@import plyr
 }
 \examples{
 ### Do not run

@@ -1,9 +1,9 @@
 #' @title wTO.Consensus
 #' @aliases Consensus
 #' @description Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined.
-#' #@import stringr
-#' #@import plyr
 #' @param data list of data.frame containing the "Node.1", "Node.2" and "wTO".
+#' @param full Missing links should be considered zero?
+
 #' @export
 #' @importFrom plyr join_all
 
@@ -20,32 +20,34 @@
 #' ### Constructing the consensus network
 #' #CONS = wTO.Consensus(data = list(Ex_k1_cor_p_boot_p005_sig, Ex_k1_cor_p_boot_p005_abs))
 
-wTO.Consensus = function(data){
+wTO.Consensus = function(data, full = FALSE){
   if (!is.list(data)){
     stop("data must be a list of data.frames.")
   }
 
-    data = lapply(data, function(x){
-    subset( x, select = names(x) %in% c("Node.1", "Node.2" , "wTO"))
-  })
-
-  lapply(data, function(x){
-    if(ncol(x) < 3){ stop ("Check your data.")}
-  })
-
-  data_xx = plyr::join_all(data, by = c("Node.1", "Node.2"), type = "inner")
-
-  data_x = data_xx[, -c(1,2)]
+  # lapply(data, function(x){
+  #   if(ncol(x) != 3){ stop ("Check your data.")}
+  # })
+  for ( i in 1:length(data)){
+    names(data[[i]])[1:2] = c('Node.1', 'Node.2')
+    names(data[[i]])[3]= paste('wTO', i)
+  }
+  if (full == FALSE){
+    data_xx = plyr::join_all(data, by = c("Node.1", "Node.2"),
+                             type = "inner")
+  }
+  else if(full == TRUE){
+    data_xx = plyr::join_all(data, by = c("Node.1", "Node.2"),
+                             type = "full")
+  }
+  data_xx[is.na(data_xx)] <- 0
+  data_x = data_xx[, -c(1, 2)]
   abs_x = apply(data_x, 2, abs)
   sum_abs_x = apply(abs_x, 1, sum)
-  div = (abs_x/sum_abs_x)*data_x
+  div = (abs_x/sum_abs_x) * data_x
   wTO_cons = apply(div, 1, sum)
-
-
-
-  cons_wto = data.frame(Node.1 = data_xx$Node.1,
-                        Node.2 = data_xx$Node.2,
+  cons_wto = data.frame(Node.1 = data_xx$Node.1, Node.2 = data_xx$Node.2,
                         wTO_Cons = wTO_cons)
-  return(data.frame(cons_wto))
+  return(data.table::data.table(cons_wto))
 }
 

@@ -4,12 +4,12 @@
 #' @param wTO weight of the links, the wTO output from wTO.Complete or wTO.Consensus.
 #' @param pval p-values for the wTO value. By default it is NULL.
 #' @param padj Adjusted p-values for the wTO value. By default it is NULL.
-
 #' @param cutoff It's a list containing the kind of cutoff to be used (pval, Threshold or pval.adj)and it's value. Example: cutoff= list(kind = "Threshold", value = 0.5)
 #' @param layout a layout from the igraph package.
 #' @param smooth.edges If the edges should be smoothed or not.
 #' @param path If the graph should be saved specify the name of the file.
 #' @param Cluster TRUE or FALSE if the nodes should be clustered (double click to uncluster).
+#' @param MakeGroups algorithm to find clusters. One of the followings: walktrap, optimal, spinglass, edge.betweenness, fast_greedy, infomap, louvain, label_prop, leading_eigen. Default to FALSE.
 #' @param legend TRUE or FALSE if the legend should appear.
 #' @param manipulation TRUE or FALSE if the graph should be editable.
 #' @param shape a list shape=list(shape = "triangle", names = NULL), with the shape and the IDs that should have a different shape, shape can be: diamond, star, triangle, triangleDown or square.
@@ -27,15 +27,15 @@
 #'  X =  wTO.Complete( k =1, n = 5, Data = ExampledfExpression,
 #'  Overlap = ExampleGRF$x, method = "p",  plot = FALSE)
 #' # Plot with the default aguments.
-#'  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
+#'  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,
 #'  wTO = X$wTO$wTO_sign, cutoff = list(kind =
 #' "Threshold", value = 0.50))
 #'
 #'\dontrun{
 #' # Plotting just the edges with p-value < 0.05, with straight edges, nodes clustered,
 #' # no legend and mapipulation of the graph enabled.
-#'   NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
-#'  wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
+#'   NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,
+#'  wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign,
 #'  padj = X$wTO$pval_sign,
 #'   cutoff= list(kind = "pval", value = 0.05),
 #'   smooth.edges = FALSE,
@@ -43,16 +43,16 @@
 #' # Plotting just the edges with wTO > 0.50, no legend and the nodes:
 #' # "ZNF738", "ZNF677" with triagle shape,
 #' # no legend and mapipulation of the graph enabled.
-#'  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
-#'  wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
+#'  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,
+#'  wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign,
 #'  padj = X$wTO$pval_sign, cutoff= list(kind = "Threshold", value = 0.5),legend = FALSE,
 #'  shape = list(shape = "triangle", names = c("ZNF738", "ZNF677")))
-#'  
+#'
 #'  }
 
 
 
-NetVis = function (Node.1, Node.2, wTO, pval= NULL,
+NetVis = function (Node.1, Node.2, wTO, pval= NULL, MakeGroups = FALSE,
                    padj= NULL,  cutoff = list(kind = "Threshold", value = 0.5),
                    layout = NULL, smooth.edges = T, path = NULL, Cluster = F,
                    legend = T, shape=list(shape = "triangle", names= NULL), manipulation = F)
@@ -72,21 +72,23 @@ NetVis = function (Node.1, Node.2, wTO, pval= NULL,
   if (is.numeric(cutoff$value) == F) {
     stop("cutoff value must be numeric.")
   }
-  # if (class(input_vis) != "data.frame") {
-  #   stop("input_vis must be a data.frame.")
-  # }
+  MakeGroups_pos = c('walktrap',
+                     'optimal', 'spinglass', 'edge.betweenness',
+                     'fast_greedy', 'infomap', 'louvain', 'label_prop',
+                     'leading_eigen', FALSE)
+
+  if(MakeGroups %ni% MakeGroups_pos){
+    stop("MakeGroups should be FALSE or one of the following options: 'walktrap',
+  'optimal', 'spinglass', 'edge.betweenness',
+  'fast_greedy', 'infomap', 'louvain', 'label_prop',
+  'leading_eigen'.")
+  }
   if (Cluster %ni% c(T, F)) {
     stop("Cluster must be T / F.")
   }
   if (smooth.edges %ni% c(T, F)) {
     stop("smooth.edges must be T / F.")
   }
-  # if (names(input_vis)[1] != "Node.1") {
-  #   stop("Name for the first column in input_vis must be \"Node.1\".")
-  # }
-  # if (names(input_vis)[2] != "Node.2") {
-  #   stop("Name for the second column in input_vis must be \"Node.2\".")
-  # }
   input_vis = subset(input_vis, abs(input_vis$wTO) > 0.01)
   if (cutoff$kind == "Threshold") {
     input_vis = subset(input_vis, abs(input_vis$wTO) >= cutoff$value)
@@ -112,26 +114,52 @@ NetVis = function (Node.1, Node.2, wTO, pval= NULL,
   igraph::E(g)$weight = abs(input_vis$wTO)
   names(DEGREE) = "degree"
   DEGREE$id = row.names(DEGREE)
-  # print(DEGREE)
-  # print(nodes)
   nodes = suppressMessages(plyr::join(nodes, DEGREE))
-  
+
   nodes$shape = ifelse(nodes$id %in% shape$names, shape$shape, "dot")
-  # print(nodes)
+
   nodes$value = (nodes$degree - min(nodes$degree))/(max(nodes$degree) -
                                                       min(nodes$degree))
-  # print(cbind(nodes$value, nodes$degree))
-  
   nodes$value = nodes$value * 2 + 1
   nodes$size = nodes$value
-  nodes$group = igraph::edge.betweenness.community(g)$membership
+
+
+  nodes$group = 1
+  if (MakeGroups == 'infomap'){
+    nodes$group = igraph::cluster_infomap(g)$membership
+  }
+  else if (MakeGroups == 'walktrap'){
+    nodes$group = igraph::cluster_walktrap(g)$membership
+  }
+  else if (MakeGroups == 'leading_eigen'){
+    nodes$group = igraph::cluster_leading_eigen(g)$membership
+  }
+  else if (MakeGroups == 'louvain'){
+    nodes$group = igraph::cluster_louvain(g)$membership
+  }
+  else if (MakeGroups == 'label_prop'){
+    nodes$group = igraph::cluster_label_prop(g)$membership
+  }
+  else if (MakeGroups == 'fast_greedy'){
+    nodes$group = igraph::cluster_fast_greedy(g)$membership
+  }
+  else if (MakeGroups == 'optimal'){
+    nodes$group = igraph::cluster_optimal(g)$membership
+  }
+  else if (MakeGroups == 'spinglass'){
+    nodes$group = igraph::cluster_spinglass(g)$membership
+  }
+  else if (MakeGroups == 'edge.betweenness'){
+    nodes$group = igraph::edge.betweenness.community(g)$membership
+  }
+
   nodes$label = nodes$id
   # print(nodes)
   # nodes$shape = "circle"
   #
-  
+
   # nodes$value = ifelse(nodes$id %in% shape$names, 3, 1)
-  
+
   nodes$title = paste0("<p> Node ID: ", nodes$id, "<br>Degree: ",
                        nodes$degree, "</p>")
   edges <- data.frame(from = input_vis$Node.1, to = input_vis$Node.2)
@@ -143,7 +171,7 @@ NetVis = function (Node.1, Node.2, wTO, pval= NULL,
                        "</p>")
   ledges <- data.frame(color = c("violetred", "springgreen"),
                        label = c("+ wTO", "- wTO"), arrows = c("", ""))
-  
+
   network <- visNetwork::visNetwork(nodes, edges) %>%
     visNetwork::visInteraction(navigationButtons = TRUE) %>%
     visNetwork::visEdges(smooth = smooth.edges) %>%
@@ -159,7 +187,7 @@ NetVis = function (Node.1, Node.2, wTO, pval= NULL,
     network <- network %>% visNetwork::visLegend(width = 0.3,
                                                  position = "right", main = "Group", addEdges = ledges,
                                                  ncol = 2)
-    
+
   }
   if (!is.null(layout)) {
     network <- network %>% visNetwork::visIgraphLayout(layout = layout)

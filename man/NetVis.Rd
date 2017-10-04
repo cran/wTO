@@ -4,10 +4,10 @@
 \alias{NetVis}
 \title{NetVis}
 \usage{
-NetVis(Node.1, Node.2, wTO, pval = NULL, padj = NULL, cutoff = list(kind =
-  "Threshold", value = 0.5), layout = NULL, smooth.edges = T, path = NULL,
-  Cluster = F, legend = T, shape = list(shape = "triangle", names = NULL),
-  manipulation = F)
+NetVis(Node.1, Node.2, wTO, pval = NULL, MakeGroups = FALSE, padj = NULL,
+  cutoff = list(kind = "Threshold", value = 0.5), layout = NULL,
+  smooth.edges = T, path = NULL, Cluster = F, legend = T,
+  shape = list(shape = "triangle", names = NULL), manipulation = F)
 }
 \arguments{
 \item{Node.1}{Names of the Nodes.1 that are connected to the Nodes.2. It's the output from wTO.Complete or Consensus.}
@@ -17,6 +17,8 @@ NetVis(Node.1, Node.2, wTO, pval = NULL, padj = NULL, cutoff = list(kind =
 \item{wTO}{weight of the links, the wTO output from wTO.Complete or wTO.Consensus.}
 
 \item{pval}{p-values for the wTO value. By default it is NULL.}
+
+\item{MakeGroups}{algorithm to find clusters. One of the followings: walktrap, optimal, spinglass, edge.betweenness, fast_greedy, infomap, louvain, label_prop, leading_eigen. Default to FALSE.}
 
 \item{padj}{Adjusted p-values for the wTO value. By default it is NULL.}
 
@@ -44,15 +46,15 @@ Given a set of Nodes and the weight of the edges, a cutoff for the edges, it dra
  X =  wTO.Complete( k =1, n = 5, Data = ExampledfExpression,
  Overlap = ExampleGRF$x, method = "p",  plot = FALSE)
 # Plot with the default aguments.
- NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
+ NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,
  wTO = X$wTO$wTO_sign, cutoff = list(kind =
 "Threshold", value = 0.50))
 
 \dontrun{
 # Plotting just the edges with p-value < 0.05, with straight edges, nodes clustered,
 # no legend and mapipulation of the graph enabled.
-  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
- wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
+  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,
+ wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign,
  padj = X$wTO$pval_sign,
   cutoff= list(kind = "pval", value = 0.05),
   smooth.edges = FALSE,
@@ -60,10 +62,10 @@ Given a set of Nodes and the weight of the edges, a cutoff for the edges, it dra
 # Plotting just the edges with wTO > 0.50, no legend and the nodes:
 # "ZNF738", "ZNF677" with triagle shape,
 # no legend and mapipulation of the graph enabled.
- NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2, 
- wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign, 
+ NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,
+ wTO = X$wTO$wTO_sign, pval = X$wTO$pval_sign,
  padj = X$wTO$pval_sign, cutoff= list(kind = "Threshold", value = 0.5),legend = FALSE,
  shape = list(shape = "triangle", names = c("ZNF738", "ZNF677")))
- 
+
  }
 }
