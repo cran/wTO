@@ -28,10 +28,14 @@ wTO.Consensus = function(data, full = FALSE){
   # lapply(data, function(x){
   #   if(ncol(x) != 3){ stop ("Check your data.")}
   # })
+  Nodes = list()
   for ( i in 1:length(data)){
     names(data[[i]])[1:2] = c('Node.1', 'Node.2')
     names(data[[i]])[3]= paste('wTO', i)
+    Nodes[[i]] = data.frame(ID = unique(c(as.character(data[[i]]$Node.1),
+                                          as.character(data[[i]]$Node.2))))
   }
+  Nodes = plyr::join_all(Nodes, type = 'inner')
   if (full == FALSE){
     data_xx = plyr::join_all(data, by = c("Node.1", "Node.2"),
                              type = "inner")
@@ -40,6 +44,7 @@ wTO.Consensus = function(data, full = FALSE){
     data_xx = plyr::join_all(data, by = c("Node.1", "Node.2"),
                              type = "full")
   }
+  data_xx = subset(data_xx, data_xx$Node.1 %in% Nodes & data_xx$Node.2 %in% Nodes)
   data_xx[is.na(data_xx)] <- 0
   data_x = data_xx[, -c(1, 2)]
   abs_x = apply(data_x, 2, abs)
