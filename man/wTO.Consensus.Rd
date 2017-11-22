@@ -2,7 +2,6 @@
 % Please edit documentation in R/wTO.Consensus.R
 \name{wTO.Consensus}
 \alias{wTO.Consensus}
-\alias{Consensus}
 \title{wTO.Consensus}
 \usage{
 wTO.Consensus(data, full = FALSE)
@@ -27,4 +26,7 @@ Consensus requires a list of data.frame containing the pair of nodes, and the wT
 ### Ex_k1_cor_p_boot_p005_abs = subset(EXAMPLE$abs.wTO, EXAMPLE$abs.wTO$pval < 0.05)
 ### Constructing the consensus network
 #CONS = wTO.Consensus(data = list(Ex_k1_cor_p_boot_p005_sig, Ex_k1_cor_p_boot_p005_abs))
+}
+\author{
+Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
 }

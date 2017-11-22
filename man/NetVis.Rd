@@ -69,3 +69,6 @@ Given a set of Nodes and the weight of the edges, a cutoff for the edges, it dra
 
  }
 }
+\author{
+Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+}

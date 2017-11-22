@@ -21,3 +21,6 @@ between a set of Nodes and the Overlapping nodes. This function implements the m
 \references{
 Katja Nowick, Tim Gernat, Eivind Almaas and Lisa Stubbs (2009) <doi:10.1073/pnas.0911376106>
 }
+\author{
+Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+}

@@ -16,3 +16,6 @@ Correlation.Overlap(Data, Overlap, method)
 \description{
 This function computes the correlation between Nodes and the Overlapping Nodes of interest.
 }
+\author{
+Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+}

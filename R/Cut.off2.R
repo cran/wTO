@@ -8,6 +8,7 @@
 #' @importFrom stats density quantile
 #'
 #'
+#' @author Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
 
 
 Cut.off = function(wTO_value, type, plot){

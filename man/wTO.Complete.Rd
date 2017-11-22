@@ -61,3 +61,6 @@ Overlap = ExampleGRF$x, method_resampling = "BlockBootstrap", lag = 2)
 X = wTO.Complete( k =1, n = 2, Data = ExampledfExpression,
 Overlap = ExampleGRF$x, method = "p", plot = FALSE)
 }
+\author{
+Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+}

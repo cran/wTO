@@ -4,6 +4,8 @@
 #' @param Overlap  A vector containg the names of the Nodes of interest.
 #' @param method  Spearman ("s", "spearman") or Pearson ("p", "pearson") correlation
 #' @rdname Correlation.Overlap
+#' @author Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+
 #' @export
 #' @importFrom stats cor
 

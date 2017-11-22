@@ -1,4 +1,5 @@
 #' @title wTO.Complete
+#' @author Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
 
 #' @param k Number of threads to be used for computing the weight Topological Overlap. Default is set to 1.
 #' @param n Number of resamplings, used to compute the empirical distribuitions of the links. Default is set to 100.

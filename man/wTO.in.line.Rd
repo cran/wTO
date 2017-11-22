@@ -15,3 +15,6 @@ the wTO matrix into a data.frame: Node1, Node2 and wTO.
 \description{
 Transforms a correlation matrix into the line format.
 }
+\author{
+Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+}

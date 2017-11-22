@@ -14,4 +14,7 @@ sample_ind(x, dfExpression)
 \description{
 Computes the resufling of the expression values for the IDs.
 }
+\author{
+Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+}
 \keyword{internal}

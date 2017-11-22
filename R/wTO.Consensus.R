@@ -1,8 +1,9 @@
 #' @title wTO.Consensus
-#' @aliases Consensus
+#' @aliases wTO.Consensus
 #' @description Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined.
 #' @param data list of data.frame containing the "Node.1", "Node.2" and "wTO".
 #' @param full Missing links should be considered zero?
+#' @author Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
 
 #' @export
 #' @importFrom plyr join_all
@@ -25,13 +26,10 @@ wTO.Consensus = function(data, full = FALSE){
     stop("data must be a list of data.frames.")
   }
 
-  # lapply(data, function(x){
-  #   if(ncol(x) != 3){ stop ("Check your data.")}
-  # })
   Nodes = list()
   for ( i in 1:length(data)){
     names(data[[i]])[1:2] = c('Node.1', 'Node.2')
-    names(data[[i]])[3]= paste('wTO', i)
+    names(data[[i]])[3]= paste('wTO', i, sep = '_')
     Nodes[[i]] = data.frame(ID = unique(c(as.character(data[[i]]$Node.1),
                                           as.character(data[[i]]$Node.2))))
   }
@@ -44,7 +42,7 @@ wTO.Consensus = function(data, full = FALSE){
     data_xx = plyr::join_all(data, by = c("Node.1", "Node.2"),
                              type = "full")
   }
-  data_xx = subset(data_xx, data_xx$Node.1 %in% Nodes & data_xx$Node.2 %in% Nodes)
+  data_xx = subset(data_xx, data_xx$Node.1 %in% Nodes$ID & data_xx$Node.2 %in% Nodes$ID)
   data_xx[is.na(data_xx)] <- 0
   data_x = data_xx[, -c(1, 2)]
   abs_x = apply(data_x, 2, abs)
@@ -55,4 +53,3 @@ wTO.Consensus = function(data, full = FALSE){
                         wTO_Cons = wTO_cons)
   return(data.table::data.table(cons_wto))
 }
-
