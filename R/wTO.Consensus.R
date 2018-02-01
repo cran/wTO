@@ -1,6 +1,6 @@
 #' @title wTO.Consensus
 #' @aliases wTO.Consensus
-#' @description Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined.
+#' @description Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined. Reference: 	arXiv:1711.04702
 #' @param data list of data.frame containing the "Node.1", "Node.2" and "wTO".
 #' @param full Missing links should be considered zero?
 #' @author Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>

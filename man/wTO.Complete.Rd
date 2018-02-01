@@ -44,7 +44,7 @@ a list with results.
 }
 }
 \description{
-Compute the wTO and also the bootstraps.
+Compute the wTO and also the bootstraps. Proposed at: 	arXiv:1711.04702
 }
 \examples{
 \dontrun{

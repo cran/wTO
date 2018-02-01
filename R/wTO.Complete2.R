@@ -14,7 +14,7 @@
 #' @param normalize T/F Should the data be normalized?
 #' @param plot T/F Should the diagnosis plot be plotted?
 #'
-#' @description Compute the wTO and also the bootstraps.
+#' @description Compute the wTO and also the bootstraps. Proposed at: 	arXiv:1711.04702
 #' @return a list with results.
 #' \itemize{
 #' \item wTO is a data.frame containig the Nodes, the wTO computed using the signed correlations, the pvalue and the adj.pvalue.

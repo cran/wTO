@@ -12,7 +12,7 @@ wTO.Consensus(data, full = FALSE)
 \item{full}{Missing links should be considered zero?}
 }
 \description{
-Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined.
+Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined. Reference: 	arXiv:1711.04702
 }
 \examples{
 ### Do not run
