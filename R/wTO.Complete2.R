@@ -224,7 +224,7 @@ wTO.Complete = function(k = 1 ,n = 100, Data , Overlap ,
       K = 1:min(N, reps_rest)
 
       OUTPUT = parallel::clusterApply(cl, K, wTO.aux.each , Data= Data,
-                                        Overlap = Overlap, lag = lag, method = method, method_resampling= method_resampling)
+                                      Overlap = Overlap, lag = lag, method = method, method_resampling= method_resampling)
       ALL  =  data.table::rbindlist(OUTPUT, idcol = idcol)
       names(ALL) = names(Orig) =  c("Rep", "Node.1", "Node.2", "wTO_sign" ,"wTO_abs")
 
@@ -333,64 +333,65 @@ wTO.Complete = function(k = 1 ,n = 100, Data , Overlap ,
                 Correlation = Total_Correlation,
                 Quantiles = Quantiles
   )
-col = ifelse(Orig$pval_sig < 0.05 & Orig$pval_abs < 0.05, "red",
-             ifelse(Orig$pval_sig < 0.05, "orange",
-                    ifelse (Orig$pval_abs < 0.05, "yellow", "black")))
-if(plot == T){
- # par(mar=c(5.1, 4.1, 4.1, 8.1), xpd=TRUE, mfrow = c(3,1))
-  graphics::plot(Orig$wTO_sign, Orig$wTO_abs, axes = F,
-                 xlab = "|wTO|", ylab = "wTO",
-                 main = "|wTO| vs wTO", pch = ".", xlim = c(-1,1), ylim = c(0,1),
-                 col.main = "steelblue2", col.lab = "steelblue2", col = col)
-  graphics::axis(1, las = 1, cex.axis = 0.6, col = "steelblue",
+  col = ifelse(Orig$pval_sig < 0.05 & Orig$pval_abs < 0.05, "red",
+               ifelse(Orig$pval_sig < 0.05, "orange",
+                      ifelse (Orig$pval_abs < 0.05, "yellow", "black")))
+  if(plot == T){
+    # par(mar=c(5.1, 4.1, 4.1, 8.1), xpd=TRUE, mfrow = c(3,1))
+    graphics::plot(Orig$wTO_sign, Orig$wTO_abs, axes = F,
+                   xlab = "|wTO|", ylab = "wTO",
+                   main = "|wTO| vs wTO", pch = ".", xlim = c(-1,1), ylim = c(0,1),
+                   col.main = "steelblue2", col.lab = "steelblue2", col = col)
+    graphics::axis(1, las = 1, cex.axis = 0.6, col = "steelblue",
 
-                 col.ticks = "steelblue3", col.axis = "steelblue")
-  graphics::axis(2, las = 1, cex.axis = 0.6, col = "steelblue",col.ticks = "steelblue3", col.axis = "steelblue")
+                   col.ticks = "steelblue3", col.axis = "steelblue")
+    graphics::axis(2, las = 1, cex.axis = 0.6, col = "steelblue",col.ticks = "steelblue3", col.axis = "steelblue")
 
-  graphics::legend(c(0.9,0), c ("p-value < 0.05", 'wTO sign & |wTO|',
-                                'wTO sign','|wTO|'),
-                   col = c("transparent","red", "orange", "yellow"), pch = 16, bty = "n",
-                   inset=c(-0.8,0), cex = 0.5 )
-
-
-  graphics::par(xpd=FALSE)
-  graphics::abline( h = 0,  lty = 2, col = "gray50")
-  graphics::abline(v = 0,  lty = 2, col = "gray50")
+    graphics::legend(c(0.9,0), c ("p-value < 0.05", 'wTO sign & |wTO|',
+                                  'wTO sign','|wTO|'),
+                     col = c("transparent","red", "orange", "yellow"), pch = 16, bty = "n",
+                     inset=c(-0.8,0), cex = 0.5 )
 
 
-  graphics::plot(Orig$wTO_sign, Orig$pval_sig, axes = F,
-                 xlab = "wTO", ylab = "p-value", ylim = c(0,1), xlim = c(-1,1), col.main = "steelblue2", col.lab = "steelblue2",
-                 main = "wTO vs p-value",
-                 pch = 16)
-  graphics::axis(1, las = 1, cex.axis = 0.6, col = "steelblue",
-
-                 col.ticks = "steelblue3", col.axis = "steelblue")
-  graphics::axis(2, las = 1, cex.axis = 0.6, col = "steelblue",col.ticks = "steelblue3", col.axis = "steelblue")
-
-  graphics::par(xpd=FALSE)
-  graphics::abline( v = tQ$Empirical.Quantile,  lty = 2, col = c("red", "orange", "yellow", "yellow", "orange", "red"))
-  graphics::par(xpd=T)
-  graphics::legend(c(0.9,0), c ("Empirical Quantiles", '0.1%','2.5%','10%','90%','97.5%','99.9%'),
-                   col = c("white", "red", "orange", "yellow", "yellow", "orange", "red"), lwd = 2, bty = "n",
-                   inset=c(-0.8,0), cex = 0.5 )
-
-  graphics::par(xpd=FALSE)
-  graphics::plot(Orig$wTO_abs, Orig$pval_abs, axes = F,
-                 xlab = "|wTO|", ylab = "p-value", ylim = c(0,1), xlim = c(0,1),
-                 main = "|wTO| vs p-value",
-                 pch = 16, col.main = "steelblue2", col.lab = "steelblue2")
-  graphics::axis(1, las = 1, cex.axis = 0.6, col = "steelblue",
-
-                 col.ticks = "steelblue3", col.axis = "steelblue")
-  graphics::axis(2, las = 1, cex.axis = 0.6, col = "steelblue",col.ticks = "steelblue3", col.axis = "steelblue")
+    graphics::par(xpd=FALSE)
+    graphics::abline( h = 0,  lty = 2, col = "gray50")
+    graphics::abline(v = 0,  lty = 2, col = "gray50")
 
 
-  graphics::abline( v = tQ$Empirical.Quantile.abs,  lty = 2, col = c("red", "orange", "yellow", "yellow", "orange", "red"))
-  graphics::par(xpd=T)
-  graphics::legend(c(0.9,0), c ("Empirical Quantiles", '0.1%','2.5%','10%','90%','97.5%','99.9%'),
-                   col = c("white", "red", "orange", "yellow", "yellow", "orange", "red"), lwd = 2, bty = "n",
-                   inset=c(-0.8,0), cex = 0.5 )
-}
+    graphics::plot(Orig$wTO_sign, Orig$pval_sig, axes = F,
+                   xlab = "wTO", ylab = "p-value", ylim = c(0,1), xlim = c(-1,1), col.main = "steelblue2", col.lab = "steelblue2",
+                   main = "wTO vs p-value",
+                   pch = 16)
+    graphics::axis(1, las = 1, cex.axis = 0.6, col = "steelblue",
+
+                   col.ticks = "steelblue3", col.axis = "steelblue")
+    graphics::axis(2, las = 1, cex.axis = 0.6, col = "steelblue",col.ticks = "steelblue3", col.axis = "steelblue")
+
+    graphics::par(xpd=FALSE)
+    graphics::abline( v = tQ$Empirical.Quantile,  lty = 2, col = c("red", "orange", "yellow", "yellow", "orange", "red"))
+    graphics::par(xpd=T)
+    graphics::legend(c(0.9,0), c ("Empirical Quantiles", '0.1%','2.5%','10%','90%','97.5%','99.9%'),
+                     col = c("white", "red", "orange", "yellow", "yellow", "orange", "red"), lwd = 2, bty = "n",
+                     inset=c(-0.8,0), cex = 0.5 )
+
+    graphics::par(xpd=FALSE)
+    graphics::plot(Orig$wTO_abs, Orig$pval_abs, axes = F,
+                   xlab = "|wTO|", ylab = "p-value", ylim = c(0,1), xlim = c(0,1),
+                   main = "|wTO| vs p-value",
+                   pch = 16, col.main = "steelblue2", col.lab = "steelblue2")
+    graphics::axis(1, las = 1, cex.axis = 0.6, col = "steelblue",
+
+                   col.ticks = "steelblue3", col.axis = "steelblue")
+    graphics::axis(2, las = 1, cex.axis = 0.6, col = "steelblue",col.ticks = "steelblue3", col.axis = "steelblue")
+
+
+    graphics::abline( v = tQ$Empirical.Quantile.abs,  lty = 2, col = c("red", "orange", "yellow", "yellow", "orange", "red"))
+    graphics::par(xpd=T)
+    graphics::legend(c(0.9,0), c ("Empirical Quantiles", '0.1%','2.5%','10%','90%','97.5%','99.9%'),
+                     col = c("white", "red", "orange", "yellow", "yellow", "orange", "red"), lwd = 2, bty = "n",
+                     inset=c(-0.8,0), cex = 0.5 )
+  }
+  class(output)<- append('wTO', class(output))
   message("Done!")
   return(output)
 }

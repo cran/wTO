@@ -15,17 +15,21 @@ wTO.Consensus(data, full = FALSE)
 Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined. Reference: 	arXiv:1711.04702
 }
 \examples{
-### Do not run
-### EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
-### Overlap = ExampleGRF$x, method = "p")
-### Do not run
-### NetVis(EXAMPLE$wTO, cutoff= list(kind = "Threshold", value = 0.55),
-### layout = "layout_in_circle")
-### Selection of only the significative ones for the Consensus
-### Ex_k1_cor_p_boot_p005_sig = subset(EXAMPLE$wTO, EXAMPLE$wTO$pval < 0.05)
-### Ex_k1_cor_p_boot_p005_abs = subset(EXAMPLE$abs.wTO, EXAMPLE$abs.wTO$pval < 0.05)
-### Constructing the consensus network
-#CONS = wTO.Consensus(data = list(Ex_k1_cor_p_boot_p005_sig, Ex_k1_cor_p_boot_p005_abs))
+\dontrun{
+EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
+                                      Overlap = ExampleGRF$x, method = "p")
+
+#Selection of only the significative ones for the Consensus
+Ex_k1_cor_p_boot_p005_sig = subset(EXAMPLE$wTO,
+EXAMPLE$wTO$pval_sig < 0.05,
+select = c("Node.1", "Node.2", "wTO_sign"))
+Ex_k1_cor_p_boot_p005_abs = subset(EXAMPLE$wTO,
+EXAMPLE$wTO$pval_abs < 0.05,
+select = c("Node.1", "Node.2", "wTO_abs"))
+# Constructing the consensus network
+CONS = wTO.Consensus(data = list(Ex_k1_cor_p_boot_p005_sig,
+Ex_k1_cor_p_boot_p005_abs))
+}
 }
 \author{
 Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
