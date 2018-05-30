@@ -11,7 +11,7 @@
 
 
 Correlation.Overlap = function(Data, Overlap, method ){
-  COR = stats::cor(t(Data), method = method,  use = "all.obs")
+  COR = stats::cor(t(Data), method = method,  use = "pairwise.complete.obs")
   diag(COR) <- 0
   COR[is.na(COR)] = 0
   Final_Correlation = subset(COR, row.names(COR) %in% Overlap)

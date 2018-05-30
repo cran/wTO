@@ -4,12 +4,10 @@
 \alias{wTO.Consensus}
 \title{wTO.Consensus}
 \usage{
-wTO.Consensus(data, full = FALSE)
+wTO.Consensus(data)
 }
 \arguments{
 \item{data}{list of data.frame containing the "Node.1", "Node.2" and "wTO".}
-
-\item{full}{Missing links should be considered zero?}
 }
 \description{
 Consensus requires a list of data.frame containing the pair of nodes, and the wTO values for all networks that need to be joined. Reference: 	arXiv:1711.04702
@@ -19,16 +17,17 @@ Consensus requires a list of data.frame containing the pair of nodes, and the wT
 EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
                                       Overlap = ExampleGRF$x, method = "p")
 
-#Selection of only the significative ones for the Consensus
-Ex_k1_cor_p_boot_p005_sig = subset(EXAMPLE$wTO,
-EXAMPLE$wTO$pval_sig < 0.05,
-select = c("Node.1", "Node.2", "wTO_sign"))
-Ex_k1_cor_p_boot_p005_abs = subset(EXAMPLE$wTO,
-EXAMPLE$wTO$pval_abs < 0.05,
-select = c("Node.1", "Node.2", "wTO_abs"))
 # Constructing the consensus network
-CONS = wTO.Consensus(data = list(Ex_k1_cor_p_boot_p005_sig,
-Ex_k1_cor_p_boot_p005_abs))
+data = list(data.frame(Node.1 = EXAMPLE$wTO$Node.1,
+Node.2 = EXAMPLE$wTO$Node.2,
+wto_sig = EXAMPLE$wTO$wTO_sign,
+pvalsig = EXAMPLE$wTO$pval_sig),
+data.frame(Node.1 = EXAMPLE$wTO$Node.1,
+Node.2 = EXAMPLE$wTO$Node.2,
+wtoabs = EXAMPLE$wTO$wTO_abs,
+pvalabs = EXAMPLE$wTO$pval_abs) )
+CONS = wTO.Consensus(data)
+
 }
 }
 \author{
