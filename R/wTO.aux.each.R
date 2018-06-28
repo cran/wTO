@@ -39,7 +39,7 @@ wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag){
   }
 
 
-  Saving = Correlation.Overlap(Data = real_Genes, Overlap = Overlap, method = method)
+  Saving = CorrelationOverlap(Data = real_Genes, Overlap = Overlap, method = method)
   WTO_abs = wTO(A = Saving,  sign = "abs")
   WTO_sig = wTO(A = Saving,  sign = "sign")
 

@@ -1,13 +1,13 @@
-#' @title ExampledfExpression
-#' @aliases ExampledfExpression
-#' @description ExampledfExpression data.frame containing expression data for 1000 genes and 18 individuals.
+#' @title Microarray_Expression1
+#' @aliases Microarray_Expression1
+#' @description Microarray_Expression1 data.frame containing expression data for 1000 genes and 18 individuals.
 #' @format data.frame 1000 lines, 18 columns.
-#' @usage ExampledfExpression
-#' @name ExampledfExpression
+#' @usage Microarray_Expression1
+#' @name Microarray_Expression1
 
 # require(plyr)
 # require(snow)
 # require(base)
-ExampledfExpression  = utils::read.table("./data/ExampledfExpression.txt")
+Microarray_Expression1  = utils::read.table("./data/Microarray_Expression1.txt")
 
 # load_all()

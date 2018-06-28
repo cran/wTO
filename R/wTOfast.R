@@ -19,10 +19,10 @@
 #' @import  magrittr 
 #' @export
 #' @examples 
-#' wTO.fast(Data = ExampledfExpression,
+#' wTO.fast(Data = Microarray_Expression1,
 #' Overlap = ExampleGRF$x, 
 #' method = "p")
-#' wTO.fast(Data = ExampledfExpression,
+#' wTO.fast(Data = Microarray_Expression1,
 #' Overlap = ExampleGRF$x, 
 #' method = "p", 
 #' method_resampling = 'BlockBootstrap', 
@@ -72,7 +72,7 @@ wTO.fast = function(Data, Overlap = row.names(Data),
   
   message("This function might take a long time to run. Don't turn off the computer.")
   
-  wtomelt0 =  wTO::Correlation.Overlap(Data = Data, Overlap = Overlap, method = method) %>% wTO::wTO(., sign)
+  wtomelt0 =  wTO::CorrelationOverlap(Data = Data, Overlap = Overlap, method = method) %>% wTO::wTO(., sign)
   `%>%` <- magrittr::`%>%`
   . <- NULL
   for ( i in 1:n){
@@ -92,12 +92,12 @@ wTO.fast = function(Data, Overlap = row.names(Data),
       SAMPLES[SAMPLES > ncol(Data)] <- NA
       SAMPLE = stats::na.exclude(SAMPLES)
       
-      res = wTO::Correlation.Overlap(Data = Data[,SAMPLE], Overlap = Overlap, method = method) %>% 
+      res = wTO::CorrelationOverlap(Data = Data[,SAMPLE], Overlap = Overlap, method = method) %>% 
         wTO::wTO(., sign)
       
     }
     else if (method_resampling != 'BlockBootstrap'){
-      res = wTO::Correlation.Overlap(Data = Data[,sample(1:ncol(Data), replace  = TRUE)], Overlap = Overlap, method = method) %>% 
+      res = wTO::CorrelationOverlap(Data = Data[,sample(1:ncol(Data), replace  = TRUE)], Overlap = Overlap, method = method) %>% 
         wTO::wTO(., sign)
     }
    

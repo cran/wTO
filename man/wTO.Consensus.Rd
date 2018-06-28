@@ -14,7 +14,7 @@ Consensus requires a list of data.frame containing the pair of nodes, and the wT
 }
 \examples{
 \dontrun{
-EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
+EXAMPLE =  wTO.Complete( k =1, n = 200, Data = Microarray_Expression1,
                                       Overlap = ExampleGRF$x, method = "p")
 
 # Constructing the consensus network

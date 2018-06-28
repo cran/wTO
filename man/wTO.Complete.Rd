@@ -49,16 +49,18 @@ Compute the wTO and also the bootstraps. Proposed at: 	arXiv:1711.04702
 \examples{
 \dontrun{
 # Using spearman rank correlation and bonferroni correction for the pvalues.
-wTO.Complete( k =8, n = 1000, Data = ExampledfExpression,
+wTO.Complete( k =8, n = 1000, Data = Microarray_Expression1,
  Overlap = ExampleGRF$x, method = "s", pvalmethod = "bonferroni")
  # Changing the resampling method to Reshuffle.
-wTO.Complete( k =1, n = 20, Data = ExampledfExpression,
+wTO.Complete( k =1, n = 20, Data = Microarray_Expression1,
 Overlap = ExampleGRF$x, method_resampling = "Reshuffle")
  # Changing the resampling method to BlockBootstrap, with a lag of 2.
-wTO.Complete( k =1, n = 20, Data = ExampledfExpression, method = "s",
-Overlap = ExampleGRF$x, method_resampling = "BlockBootstrap", lag = 2)
+ row.names(metagenomics_abundance) = metagenomics_abundance$OTU
+ metagenomics_abundance = metagenomics_abundance[,-1]
+wTO.Complete( k =1, n = 2000, Data = metagenomics_abundance, method = "s",
+Overlap = row.names(metagenomics_abundance), method_resampling = "BlockBootstrap", lag = 2)
  }
-X = wTO.Complete( k =1, n = 2, Data = ExampledfExpression,
+X = wTO.Complete( k =1, n = 2, Data = Microarray_Expression1,
 Overlap = ExampleGRF$x, method = "p", plot = FALSE)
 }
 \author{

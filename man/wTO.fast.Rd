@@ -28,10 +28,10 @@ wTO.fast(Data, Overlap = row.names(Data), method = "p", sign = "sign",
 Compute the wTO and also the bootstraps. Proposed at arXiv:1711.04702. This is a quicker version of the wTO.Complete. It doesn'T contain diagnose plots nor a parallel version.
 }
 \examples{
-wTO.fast(Data = ExampledfExpression,
+wTO.fast(Data = Microarray_Expression1,
 Overlap = ExampleGRF$x, 
 method = "p")
-wTO.fast(Data = ExampledfExpression,
+wTO.fast(Data = Microarray_Expression1,
 Overlap = ExampleGRF$x, 
 method = "p", 
 method_resampling = 'BlockBootstrap', 

@@ -25,7 +25,7 @@
 #'
 #' @examples
 #'
-#'  X =  wTO.Complete( k =1, n = 5, Data = ExampledfExpression,
+#'  X =  wTO.Complete( k =1, n = 5, Data = Microarray_Expression1,
 #'  Overlap = ExampleGRF$x, method = "p",  plot = FALSE)
 #' # Plot with the default aguments.
 #'  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,

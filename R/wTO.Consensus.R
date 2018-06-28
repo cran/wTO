@@ -10,7 +10,7 @@
 
 #' @examples
 #' \dontrun{
-#'EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
+#'EXAMPLE =  wTO.Complete( k =1, n = 200, Data = Microarray_Expression1,
 #'                                       Overlap = ExampleGRF$x, method = "p")
 #'
 #' # Constructing the consensus network
@@ -50,6 +50,8 @@ wTO.Consensus = function(data){
   message(paste('Total common nodes:', nrow(nodes)))
   weight = subset(weight, weight$Node.1 %in% nodes$ID & weight$Node.2 %in% nodes$ID)
   pval = subset(pval, pval$Node.1 %in% nodes$ID & pval$Node.2 %in% nodes$ID)
+  pval[is.na(pval)] <- 1
+  weight[is.na(weight)] <- 0.01
   
   wTOCN = CN_aux(weight[, -c(1:2)])
   pvalue_fisher = fishermethod(pval[, -c(1:2)])
