@@ -1,5 +1,5 @@
-5d6ee6b18ed711db550ff08378d35fcd *DESCRIPTION
-aa5a67dab691087fa9fbe244bfaf2538 *NAMESPACE
+6e6ab35d884bb191220ba14a89e5347c *DESCRIPTION
+bdec85cc891b0aa9e3ba94ccc962a530 *NAMESPACE
 19249c7ed2b656c822db52f2c6f82f6b *R/Correlation.Overlap.R
 3ca11e0f911e712248efc9b62142be09 *R/Cut.off2.R
 afc341464d2b8d32548e5317ec1fa685 *R/ExampleGRF.R
@@ -7,6 +7,7 @@ afc341464d2b8d32548e5317ec1fa685 *R/ExampleGRF.R
 0edee71ef04da0a50d6a83966f0d0038 *R/ExampledfExpression2.R
 31184236d0bad063fbaea97e26ec852b *R/NetVis.R
 24b23360d498a7dfe97241bc54c23230 *R/metagenomics.R
+898d8579f731a224b0f6800fdcd4b6f1 *R/rmcor.R
 cd292c81fcec536fd7aa66638cde5a75 *R/sample_ind.R
 67e36668bbbbf3ceab000eb73f8b1584 *R/wTO.Complete2.R
 885d857541a9cd1c455d589166e4a09b *R/wTO.Consensus.R
@@ -14,16 +15,17 @@ cd292c81fcec536fd7aa66638cde5a75 *R/sample_ind.R
 67f6d6347b2b838166cb00eee2392767 *R/wTO.aux.each.R
 8b78a267d344d791b909f479fa558a86 *R/wTO.export.R
 1c0c04f95baf3034b6ed7f9b88e4b43f *R/wTO.in.line.R
+60c51bfc6c04ba7aa0a9472f0f52c9bf *R/wTO.rep_measure.R
 5c8349d0eeaaad9acfdda5ea35a15801 *R/wTOfast.R
 c45a01a75d87c78489cdbcfb1c49e098 *build/vignette.rds
 90fb5cce412fcc2f63f2930862621058 *data/ExampleGRF.txt
 8d0a02b4059f77bc3d2f688b31dfedcc *data/Microarray_Expression1.txt
 b91cc969bed1f4d546e572e4e19632a0 *data/Microarray_Expression2.txt
 c16fd85bab96c75d5ae5ffa614cff0fb *data/metagenomics_abundance.txt
-4db8ddb625976888c031bd214125c1ea *inst/CITATION
+99b39883ad320ba4853d460c18217d44 *inst/CITATION
 bbc07ec72cddb8d28f1c2a7ab322f031 *inst/doc/wTOvignette.R
 2208b9b7381e20ca77ecdcb5a09124db *inst/doc/wTOvignette.Rmd
-79a9e9f39b337f1d2f43372d0c48b9ad *inst/doc/wTOvignette.html
+a7eba2e03e649ec31e3329fb8a6f0f1d *inst/doc/wTOvignette.html
 456fc33c708645bd0935ce077c5479cb *man/CorrelationOverlap.Rd
 fb2d013c1312da43e03377e139593111 *man/Cut.off.Rd
 0d51be71fab0a33f1308ab23837dd6b0 *man/ExampleGRF.Rd
@@ -31,6 +33,7 @@ fb2d013c1312da43e03377e139593111 *man/Cut.off.Rd
 d25a65c3af3e85b3b62240e6b727da34 *man/Microarray_Expression2.Rd
 012df8e7b7d844e2e10abd0f5b1bbc6a *man/NetVis.Rd
 0bb6ef5023e8c3c7f7cd8a5c7e13f4b0 *man/metagenomics_abundance.Rd
+0d11bca8801829607c6d05bcb241fcf0 *man/rmcor.Rd
 7a34a4a688a1af8ed26ca98563f7fb5c *man/sample_ind.Rd
 4df5678d99d9548527f6cdf7f717008a *man/wTO.Complete.Rd
 3275303c62d511b76a12a1ca5b939c53 *man/wTO.Consensus.Rd
@@ -39,6 +42,7 @@ e1c9aff6e7994bdcc66c06c8e236675e *man/wTO.Rd
 d3db716a5895f518d6f53f839e458883 *man/wTO.export.Rd
 3a80c3b37ffc5f6140d2f5bfc811fe97 *man/wTO.fast.Rd
 2df92ba7edfd096a4f7617ff1dc59478 *man/wTO.in.line.Rd
+cacae6ab2a6ac8eaaf3db1175b9ac570 *man/wTO.rep_measure.Rd
 054552164f6a646127bbf52696d94d47 *vignettes/ManualwTO_v3_files/figure-markdown_strict/unnamed-chunk-11-1.png
 ebd38d636efc5a4f6373660c011fe440 *vignettes/ManualwTO_v3_files/figure-markdown_strict/unnamed-chunk-14-1.png
 3f2ea574b3aa426835681d622940806b *vignettes/ManualwTO_v3_files/figure-markdown_strict/unnamed-chunk-14-2.png

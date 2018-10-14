@@ -13,14 +13,15 @@ Network}",
          note = note,
          url = "https://CRAN.R-project.org/package=wTO")
 
-bibentry(bibtype = "Manual",
+bibentry(bibtype = "Article",
          title = "{wTO: Computing Weighted Topological Overlaps and Consensus wTO Network, an R package.}",
          author = c(person("Deisy", "Morselli Gysi"),
                     person("Andre", "Voigt"),
                     person("Tiago", "de Miranda Fragoso"),
                     person("Eivind", "Almaas"),
                     person("Katja", "Nowick")),
-         year = 2017,
+         year = 2018,
+         journal= "BMC Bioinformatics",
          url = "https://arxiv.org/abs/1711.04702")
 
 
