@@ -22,7 +22,14 @@ bibentry(bibtype = "Article",
                     person("Katja", "Nowick")),
          year = 2018,
          journal= "BMC Bioinformatics",
-         url = "https://arxiv.org/abs/1711.04702")
-
+         issn="1471-2105",
+doi="10.1186/s12859-018-2351-7",
+year="2018",
+month="Oct",
+day="24",
+volume="19",
+number="1",
+pages="392",
+         url = "https://doi.org/10.1186/s12859-018-2351-7")
 
 

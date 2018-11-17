@@ -11,6 +11,8 @@
 #' @param savecor T/F if need to save the correlation.
 #' @param expected.diff Difference expected between the real wTO and resampled wTO By default, it is set to 0.2.
 #' @param lag time dependency, lag, if you are using the BlockedBootstrap.
+#' @param ID ID of the samples for the blocked bootstrap (for repeated measures).
+
 #' @param normalize T/F Should the data be normalized?
 #' @param plot T/F Should the diagnosis plot be plotted?
 #'
@@ -39,25 +41,28 @@
 #' wTO.Complete( k =8, n = 1000, Data = Microarray_Expression1,
 #'  Overlap = ExampleGRF$x, method = "s", pvalmethod = "bonferroni")
 #'  # Changing the resampling method to Reshuffle.
-#' wTO.Complete( k =1, n = 20, Data = Microarray_Expression1,
+#' wTO.Complete( k =1, n = 1000, Data = Microarray_Expression1,
 #' Overlap = ExampleGRF$x, method_resampling = "Reshuffle")
 #'  # Changing the resampling method to BlockBootstrap, with a lag of 2.
 #'  row.names(metagenomics_abundance) = metagenomics_abundance$OTU
 #'  metagenomics_abundance = metagenomics_abundance[,-1]
-#' wTO.Complete( k =1, n = 2000, Data = metagenomics_abundance, method = "s",
+#' wTO.Complete( k =1, n = 1000, Data = metagenomics_abundance, method = "s",
 #' Overlap = row.names(metagenomics_abundance), method_resampling = "BlockBootstrap", lag = 2)
-#'  }
-#' X = wTO.Complete( k =1, n = 2, Data = Microarray_Expression1,
+#' wTO.Complete( k =2, n = 1000, Data = Microarray_Expression1, method = "s",
+#' Overlap = ExampleGRF$x, method_resampling = "BlockBootstrap", ID = rep(1:9,each = 2))
+#' X = wTO.Complete( k =1, n = 1000, Data = Microarray_Expression1,
 #' Overlap = ExampleGRF$x, method = "p", plot = FALSE)
+#'  }
+
 #' @export
 
 
 
 
-wTO.Complete = function(k = 1 ,n = 100, Data , Overlap ,
+wTO.Complete = function(k = 1 ,n = 100, Data , Overlap = row.names(Data),
                         method = "p", method_resampling = "Bootstrap",
                         pvalmethod = "BH", savecor = F,
-                        expected.diff = 0.20, lag = NULL,
+                        expected.diff = 0.20, lag = NULL, ID = NULL, 
                         normalize = F, plot = T){
   N = k
   Overlap = unique(as.character(Overlap))
@@ -87,10 +92,12 @@ wTO.Complete = function(k = 1 ,n = 100, Data , Overlap ,
     stop('Method must be: "Bootstrap", "BlockBootstrap" or "Reshuffle".')
   }
   if(method_resampling %in% "BlockBootstrap"){
-    if (is.null(lag)){
-      stop('If you want to use the "BlockBootstrap" please give a lag.')
+    if (is.null(lag)&is.null(ID)){
+      stop('If you want to use the "BlockBootstrap" please give a lag or the indivuals ID.')
     }
-    
+    if(!is.null(lag)&!is.null(ID)){
+      stop('If you want to use the "BlockBootstrap" please give a lag OR the indivuals ID.')
+    }
   }
   if(pvalmethod %ni% c ('holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'fdr', 'none')){
     stop("pvalmethod must be:  'holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'fdr' or 'none'")
@@ -145,7 +152,7 @@ wTO.Complete = function(k = 1 ,n = 100, Data , Overlap ,
       
       # K = 1:n
       OUTPUT = lapply(K, wTO.aux.each, Data= Data,
-                      Overlap = Overlap, method = method, lag = lag, method_resampling= method_resampling)
+                      Overlap = Overlap, method = method, ID, lag = lag, method_resampling= method_resampling)
       
       ALL  =  data.table::rbindlist(OUTPUT, idcol = idcol)
       names(ALL) = names(Orig) =  c("Rep", "Node.1", "Node.2", "wTO_sign" ,"wTO_abs")
@@ -205,6 +212,7 @@ wTO.Complete = function(k = 1 ,n = 100, Data , Overlap ,
     assign("method_resampling", method_resampling, envir = WTO)
     assign("sample_ind", sample_ind, envir = WTO)
     assign("lag", lag, envir = WTO)
+    assign("ID", ID, envir = WTO)
     cl = parallel::makeCluster(k)
     parallel::clusterExport(cl, "Data", envir = WTO)
     parallel::clusterExport(cl, "wTO.in.line", envir = WTO)
@@ -225,7 +233,7 @@ wTO.Complete = function(k = 1 ,n = 100, Data , Overlap ,
       K = 1:min(N, reps_rest)
       
       OUTPUT = parallel::clusterApply(cl, K, wTO.aux.each , Data= Data,
-                                      Overlap = Overlap, lag = lag, method = method, method_resampling= method_resampling)
+                                      Overlap = Overlap, ID, lag = lag, method = method, method_resampling= method_resampling)
       ALL  =  data.table::rbindlist(OUTPUT, idcol = idcol)
       names(ALL) = names(Orig) =  c("Rep", "Node.1", "Node.2", "wTO_sign" ,"wTO_abs")
       

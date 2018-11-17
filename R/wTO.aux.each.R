@@ -11,38 +11,53 @@
 #' @param method_resampling method of the resampling. Bootstrap or Reshuffle. Bootstrap null hypothesis is that the wTO is random, and Reshuffle tests if the wTO is equal to zero.
 
 
-wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag){
+wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag, ID){
   if(method_resampling == "Bootstrap"){
     real_Genes = sample(Data, replace = T)
   }
   if(method_resampling == "BlockBootstrap"){
-    nsampl = ifelse (ncol(Data) %% lag == 0, ncol(Data) %/% lag, ncol(Data) %/% lag +1)
-    Y = sample(1:nsampl, size = nsampl, replace =  T)
-    Vect = Y*lag
-    i = lag - 1
-    while( i > 0){
-      Vect = cbind(Vect , Y*lag - i)
-      i = i - 1
+    if(!is.null(lag)){
+      nsampl = ifelse (ncol(Data) %% lag == 0, ncol(Data) %/% lag, ncol(Data) %/% lag +1)
+      Y = sample(1:nsampl, size = nsampl, replace =  T)
+      Vect = Y*lag
+      i = lag - 1
+      while( i > 0){
+        Vect = cbind(Vect , Y*lag - i)
+        i = i - 1
+      }
+      
+      SAMPLES = c(Vect)
+      SAMPLES[SAMPLES > ncol(Data)] <- NA
+      SAMPLE = stats::na.exclude(SAMPLES)
+      real_Genes =  Data[,SAMPLE]
+      row.names(real_Genes)=row.names(Data)
+      
     }
-
-    SAMPLES = c(Vect)
-    SAMPLES[SAMPLES > ncol(Data)] <- NA
-    SAMPLE = stats::na.exclude(SAMPLES)
-    real_Genes =  Data[,SAMPLE]
-    row.names(real_Genes)=row.names(Data)
-
+    
+    if(!is.null(ID)){
+      ID %<>% as.factor
+      bootID = sample(levels(ID), replace = TRUE)
+      
+      
+      Data_boot = subset(Data, select = ID %in% bootID[1])
+      
+      for (k in 2:length(bootID)){
+        real_Genes = cbind(Data_boot,
+                          subset(Data, select = ID %in% bootID[k]))
+      }
+    }
   }
   else if(method_resampling == "Reshuffle" ){
     real_Genes = as.data.frame(lapply(1:ncol(Data), FUN = sample_ind, dfExpression = Data))
     names(real_Genes)=names(Data)
     row.names(real_Genes)=row.names(Data)
   }
-
-
+  
+  
   Saving = CorrelationOverlap(Data = real_Genes, Overlap = Overlap, method = method)
   WTO_abs = wTO(A = Saving,  sign = "abs")
   WTO_sig = wTO(A = Saving,  sign = "sign")
-
+  
   # message(".", appendLF = F)
   Cor_star = wTO.in.line(WTO_sig)
   Cor_star_abs = wTO.in.line(WTO_abs)

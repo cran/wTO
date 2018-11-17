@@ -4,9 +4,10 @@
 \alias{wTO.Complete}
 \title{wTO.Complete}
 \usage{
-wTO.Complete(k = 1, n = 100, Data, Overlap, method = "p",
-  method_resampling = "Bootstrap", pvalmethod = "BH", savecor = F,
-  expected.diff = 0.2, lag = NULL, normalize = F, plot = T)
+wTO.Complete(k = 1, n = 100, Data, Overlap = row.names(Data),
+  method = "p", method_resampling = "Bootstrap", pvalmethod = "BH",
+  savecor = F, expected.diff = 0.2, lag = NULL, ID = NULL,
+  normalize = F, plot = T)
 }
 \arguments{
 \item{k}{Number of threads to be used for computing the weight Topological Overlap. Default is set to 1.}
@@ -28,6 +29,8 @@ wTO.Complete(k = 1, n = 100, Data, Overlap, method = "p",
 \item{expected.diff}{Difference expected between the real wTO and resampled wTO By default, it is set to 0.2.}
 
 \item{lag}{time dependency, lag, if you are using the BlockedBootstrap.}
+
+\item{ID}{ID of the samples for the blocked bootstrap (for repeated measures).}
 
 \item{normalize}{T/F Should the data be normalized?}
 
@@ -52,16 +55,18 @@ Compute the wTO and also the bootstraps. Proposed at: 	arXiv:1711.04702
 wTO.Complete( k =8, n = 1000, Data = Microarray_Expression1,
  Overlap = ExampleGRF$x, method = "s", pvalmethod = "bonferroni")
  # Changing the resampling method to Reshuffle.
-wTO.Complete( k =1, n = 20, Data = Microarray_Expression1,
+wTO.Complete( k =1, n = 1000, Data = Microarray_Expression1,
 Overlap = ExampleGRF$x, method_resampling = "Reshuffle")
  # Changing the resampling method to BlockBootstrap, with a lag of 2.
  row.names(metagenomics_abundance) = metagenomics_abundance$OTU
  metagenomics_abundance = metagenomics_abundance[,-1]
-wTO.Complete( k =1, n = 2000, Data = metagenomics_abundance, method = "s",
+wTO.Complete( k =1, n = 1000, Data = metagenomics_abundance, method = "s",
 Overlap = row.names(metagenomics_abundance), method_resampling = "BlockBootstrap", lag = 2)
- }
-X = wTO.Complete( k =1, n = 2, Data = Microarray_Expression1,
+wTO.Complete( k =2, n = 1000, Data = Microarray_Expression1, method = "s",
+Overlap = ExampleGRF$x, method_resampling = "BlockBootstrap", ID = rep(1:9,each = 2))
+X = wTO.Complete( k =1, n = 1000, Data = Microarray_Expression1,
 Overlap = ExampleGRF$x, method = "p", plot = FALSE)
+ }
 }
 \author{
 Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>

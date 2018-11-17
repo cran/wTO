@@ -8,9 +8,10 @@
 #' @param sign Should the wTO be signed?
 #' @param delta expected difference between the real wTO and the bootstraped.
 #' @param method_resampling method of the resampling. Bootstrap or BlockBootstrap.If the second is used, please give the lag (time dependency among the data).
-#' @param lag Time dependency for the blocked bootstrap.
+#' @param lag Time dependency for the blocked bootstrap (for time series).
+#' @param ID ID of the samples for the blocked bootstrap (for repeated measures).
 #' 
-#' @description Compute the wTO and also the bootstraps. Proposed at arXiv:1711.04702. This is a quicker version of the wTO.Complete. It doesn'T contain diagnose plots nor a parallel version.
+#' @description Compute the wTO and also the bootstraps. Proposed at arXiv:1711.04702. This is a quicker version of the wTO.Complete. It doesn't contain diagnose plots nor a parallel version.
 #' @importFrom  parallel makeCluster clusterExport clusterApplyLB  stopCluster
 #' @importFrom  data.table rbindlist dcast
 #' @importFrom  som normalize
@@ -22,21 +23,29 @@
 #' wTO.fast(Data = Microarray_Expression1,
 #' Overlap = ExampleGRF$x, 
 #' method = "p")
+#' 
+#' # For a time series with lag = 4
 #' wTO.fast(Data = Microarray_Expression1,
 #' Overlap = ExampleGRF$x, 
 #' method = "p", 
 #' method_resampling = 'BlockBootstrap', 
 #' lag = 4)
 
+#' # For a study where the individuals were measured multiple times.
+#' wTO.fast(Data = Microarray_Expression1,
+#' Overlap = ExampleGRF$x, 
+#' method = "p", 
+#' method_resampling = 'BlockBootstrap', 
+#' ID = rep(1:9, each= 2))
 
 wTO.fast = function(Data, Overlap = row.names(Data), 
                     method = 'p', sign = 'sign', 
                     delta = 0.2, n = 10,
-                    method_resampling = 'Bootstrap', lag = NULL){
+                    method_resampling = 'Bootstrap', lag = NULL, ID = NULL){
   Overlap = unique(as.character(Overlap))
   `%ni%` <- Negate(`%in%`)
   ##### Messages
- 
+  
   if(is.numeric(n) == F){
     stop("n must be numeric.")
   }
@@ -55,12 +64,14 @@ wTO.fast = function(Data, Overlap = row.names(Data),
     stop('Method must be: "Bootstrap" or "BlockBootstrap".')
   }
   if(method_resampling %in% "BlockBootstrap"){
-    if (is.null(lag)){
-      stop('If you want to use the "BlockBootstrap" please give a lag.')
+    if (is.null(lag)&is.null(ID)){
+      stop('If you want to use the "BlockBootstrap" please give a lag or the indivuals ID.')
     }
-    
+    if(!is.null(lag)&!is.null(ID)){
+      stop('If you want to use the "BlockBootstrap" please give a lag OR the indivuals ID.')
+    }
   }
- 
+  
   DIM_Overlap = nrow(subset(Data, row.names(Data) %in% Overlap))
   if(DIM_Overlap == 0){
     stop('There is no overlapping nodes. Please check your input "Overlap"')
@@ -76,23 +87,39 @@ wTO.fast = function(Data, Overlap = row.names(Data),
   `%>%` <- magrittr::`%>%`
   . <- NULL
   for ( i in 1:n){
-    message('.', appendLF = FALSE)
+    message(' ',i,' ', appendLF = FALSE)
     
     if(method_resampling == 'BlockBootstrap'){
-      nsampl = ifelse (ncol(Data) %% lag == 0, ncol(Data) %/% lag, ncol(Data) %/% lag +1)
-      Y = sample(1:nsampl, size = nsampl, replace =  T)
-      Vect = Y*lag
-      j = lag - 1
-      while( j > 0){
-        Vect = cbind(Vect , Y*lag - j)
-        j = j - 1
+      if (!is.null(lag)){
+        nsampl = ifelse (ncol(Data) %% lag == 0, ncol(Data) %/% lag, ncol(Data) %/% lag +1)
+        Y = sample(1:nsampl, size = nsampl, replace =  T)
+        Vect = Y*lag
+        j = lag - 1
+        while( j > 0){
+          Vect = cbind(Vect , Y*lag - j)
+          j = j - 1
+        }
+        
+        SAMPLES = c(Vect)
+        SAMPLES[SAMPLES > ncol(Data)] <- NA
+        SAMPLE = stats::na.exclude(SAMPLES)
+        Data_boot = Data[,SAMPLE]
       }
       
-      SAMPLES = c(Vect)
-      SAMPLES[SAMPLES > ncol(Data)] <- NA
-      SAMPLE = stats::na.exclude(SAMPLES)
+      if(!is.null(ID)){
+        ID %<>% as.factor
+        bootID = sample(levels(ID), replace = TRUE)
+        
+        
+        Data_boot = subset(Data, select = ID %in% bootID[1])
+        
+        for (k in 2:length(bootID)){
+          Data_boot = cbind(Data_boot,
+                            subset(Data, select = ID %in% bootID[k]))
+        }
+      }
       
-      res = wTO::CorrelationOverlap(Data = Data[,SAMPLE], Overlap = Overlap, method = method) %>% 
+      res = wTO::CorrelationOverlap(Data = Data_boot, Overlap = Overlap, method = method) %>% 
         wTO::wTO(., sign)
       
     }
@@ -100,8 +127,8 @@ wTO.fast = function(Data, Overlap = row.names(Data),
       res = wTO::CorrelationOverlap(Data = Data[,sample(1:ncol(Data), replace  = TRUE)], Overlap = Overlap, method = method) %>% 
         wTO::wTO(., sign)
     }
-   
-
+    
+    
     U  = (res < wtomelt0 - delta) + (res > wtomelt0 + delta)
     if ( i == 1){
       out = U}
@@ -114,7 +141,10 @@ wTO.fast = function(Data, Overlap = row.names(Data),
   
   wtomelt0 = wTO.in.line(wtomelt0)
   cor      = wTO.in.line(out)
-  pval = data.table::data.table(wtomelt0, pval = cor$wTO/n)
+  adj.pval = p.adjust(cor$wTO/n, method = 'BH')
+  
+  pval = data.table::data.table(wtomelt0, pval = cor$wTO/n, pval.adj = adj.pval)
+  
   message('Done!')
   return(pval)
 }

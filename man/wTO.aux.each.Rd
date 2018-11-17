@@ -4,7 +4,7 @@
 \alias{wTO.aux.each}
 \title{wTO.aux.each}
 \usage{
-wTO.aux.each(n, Data, Overlap, method, method_resampling, lag)
+wTO.aux.each(n, Data, Overlap, method, method_resampling, lag, ID)
 }
 \arguments{
 \item{n}{Number of bootstraps / reshuffles to be run for the estimatives of the "Threshold" or "pval".}
