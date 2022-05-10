@@ -4,7 +4,9 @@
 \name{Microarray_Expression1}
 \alias{Microarray_Expression1}
 \title{Microarray_Expression1}
-\format{data.frame 1000 lines, 18 columns.}
+\format{
+data.frame 1000 lines, 18 columns.
+}
 \usage{
 Microarray_Expression1
 }

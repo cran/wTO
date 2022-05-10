@@ -4,10 +4,21 @@
 \alias{wTO.Complete}
 \title{wTO.Complete}
 \usage{
-wTO.Complete(k = 1, n = 100, Data, Overlap = row.names(Data),
-  method = "p", method_resampling = "Bootstrap", pvalmethod = "BH",
-  savecor = F, expected.diff = 0.2, lag = NULL, ID = NULL,
-  normalize = F, plot = T)
+wTO.Complete(
+  k = 1,
+  n = 100,
+  Data,
+  Overlap = row.names(Data),
+  method = "p",
+  method_resampling = "Bootstrap",
+  pvalmethod = "BH",
+  savecor = F,
+  expected.diff = 0.2,
+  lag = NULL,
+  ID = NULL,
+  normalize = F,
+  plot = T
+)
 }
 \arguments{
 \item{k}{Number of threads to be used for computing the weight Topological Overlap. Default is set to 1.}

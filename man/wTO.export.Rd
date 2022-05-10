@@ -4,8 +4,7 @@
 \alias{wTO.export}
 \title{wTO.export}
 \usage{
-wTO.export(DATA, path, sign = TRUE, pvalue = 0.05, padj = 0.05,
-  prop.NA = 0.5)
+wTO.export(DATA, path, sign = TRUE, pvalue = 0.05, padj = 0.05, prop.NA = 0.5)
 }
 \arguments{
 \item{DATA}{Output from the function wTO.Complete or wTO.Consensus.}
@@ -25,7 +24,7 @@ Exports the significative interactions, the wTO weight and pvalues into a .txt f
 }
 \examples{
 \dontrun{
-EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
+EXAMPLE =  wTO.Complete( k =1, n = 200, Data = Microarray_Expression2,
                                       Overlap = ExampleGRF$x, method = "p")
 wTO.export(EXAMPLE , './EXAMPLE.txt')
 

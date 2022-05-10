@@ -6,6 +6,7 @@
 #' @keywords internal
 #' @import graphics
 #' @importFrom stats density quantile
+#' @importFrom methods is
 #'
 #'
 #' @author Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
@@ -83,7 +84,7 @@ Cut.off = function(wTO_value, type, plot){
       
     }
     res <- try(PLOT(wTO_value))
-    if(class(res)!= 'try-error'){
+    if(methods::is(res)!= 'try-error'){
       res
     }
   }

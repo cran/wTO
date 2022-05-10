@@ -1,10 +1,10 @@
 
 #' @title wTO.aux.each
-#' @description wTO.aux.each calculte the wTO for each one of the resamplings.
+#' @description wTO.aux.each calculate the wTO for each one of the resamplings.
 #' @keywords internal
 #' @importFrom stats na.exclude
 #' @importFrom data.table setkeyv
-#' @param n Number of bootstraps / reshuffles to be run for the estimatives of the "Threshold" or "pval".
+#' @param n Number of bootstraps / reshuffles to be run for the estimates of the "Threshold" or "pval".
 #' @param Data data.frame containing the count / expression data for the correlation.
 #' @param Overlap Nodes of interested, where the Overlapping weights will be computed.
 #' @param method Type of the correlation that should be used. "s" / "spearman" will compute the rank spearman correlation, "p" / "pearson" will compute the linear correlation. If no value is given, the default is to use "s".

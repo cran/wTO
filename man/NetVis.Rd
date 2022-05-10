@@ -4,11 +4,22 @@
 \alias{NetVis}
 \title{NetVis}
 \usage{
-NetVis(Node.1, Node.2, wTO, pval = NULL, MakeGroups = FALSE,
-  padj = NULL, cutoff = list(kind = "Threshold", value = 0.5),
-  layout = NULL, smooth.edges = T, path = NULL, Cluster = F,
-  legend = T, shape = list(shape = "triangle", names = NULL),
-  manipulation = F)
+NetVis(
+  Node.1,
+  Node.2,
+  wTO,
+  pval = NULL,
+  MakeGroups = FALSE,
+  padj = NULL,
+  cutoff = list(kind = "Threshold", value = 0.5),
+  layout = NULL,
+  smooth.edges = T,
+  path = NULL,
+  Cluster = F,
+  legend = T,
+  shape = list(shape = "triangle", names = NULL),
+  manipulation = F
+)
 }
 \arguments{
 \item{Node.1}{Names of the Nodes.1 that are connected to the Nodes.2. It's the output from wTO.Complete or Consensus.}

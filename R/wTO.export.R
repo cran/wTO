@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' EXAMPLE =  wTO.Complete( k =1, n = 200, Data = ExampledfExpression,
+#' EXAMPLE =  wTO.Complete( k =1, n = 200, Data = Microarray_Expression2,
 #'                                       Overlap = ExampleGRF$x, method = "p")
 #' wTO.export(EXAMPLE , './EXAMPLE.txt')
 #'

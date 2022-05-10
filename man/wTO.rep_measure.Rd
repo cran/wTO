@@ -4,8 +4,14 @@
 \alias{wTO.rep_measure}
 \title{wTO.rep_measure}
 \usage{
-wTO.rep_measure(Data, Overlap = row.names(Data), ID, sign = "sign",
-  delta = 0.2, n = 10)
+wTO.rep_measure(
+  Data,
+  Overlap = row.names(Data),
+  ID,
+  sign = "sign",
+  delta = 0.2,
+  n = 10
+)
 }
 \arguments{
 \item{Data}{data.frame containing the count / expression data for the correlation.}

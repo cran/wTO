@@ -4,7 +4,9 @@
 \name{ExampleGRF}
 \alias{ExampleGRF}
 \title{ExampleGRF}
-\format{data.frame 184 lines, 1 column.}
+\format{
+data.frame 184 lines, 1 column.
+}
 \usage{
 data(ExampleGRF)
 }

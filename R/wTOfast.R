@@ -20,25 +20,26 @@
 #' @import  magrittr 
 #' @export
 #' @examples 
-#' wTO.fast(Data = Microarray_Expression1,
-#' Overlap = ExampleGRF$x, 
-#' method = "p")
+#' # wTO.fast(Data = Microarray_Expression1,
+#' # Overlap = ExampleGRF$x, 
+#' # method = "p")
 #' 
 #' # For a time series with lag = 4
-#' wTO.fast(Data = Microarray_Expression1,
-#' Overlap = ExampleGRF$x, 
-#' method = "p", 
-#' method_resampling = 'BlockBootstrap', 
-#' lag = 4)
-
+#' # wTO.fast(Data = Microarray_Expression1,
+#' # Overlap = ExampleGRF$x, 
+#' # method = "p", 
+#' # method_resampling = 'BlockBootstrap', 
+#' # lag = 4)
+#' 
 #' # For a study where the individuals were measured multiple times.
-#' wTO.fast(Data = Microarray_Expression1,
-#' Overlap = ExampleGRF$x, 
-#' method = "p", 
-#' method_resampling = 'BlockBootstrap', 
-#' ID = rep(1:9, each= 2))
+#' # wTO.fast(Data = Microarray_Expression1,
+#' # Overlap = ExampleGRF$x, 
+#' # method = "p", 
+#' # method_resampling = 'BlockBootstrap', 
+#' # ID = rep(1:9, each= 2))
 
-wTO.fast = function(Data, Overlap = row.names(Data), 
+wTO.fast = function(Data, 
+                    Overlap = row.names(Data), 
                     method = 'p', sign = 'sign', 
                     delta = 0.2, n = 10,
                     method_resampling = 'Bootstrap', lag = NULL, ID = NULL){
@@ -83,7 +84,10 @@ wTO.fast = function(Data, Overlap = row.names(Data),
   
   message("This function might take a long time to run. Don't turn off the computer.")
   
-  wtomelt0 =  wTO::CorrelationOverlap(Data = Data, Overlap = Overlap, method = method) %>% wTO::wTO(., sign)
+  wtomelt0 =  wTO::CorrelationOverlap(Data = Data,
+                                      Overlap = Overlap, 
+                                      method = method) %>%
+    wTO::wTO(., sign)
   `%>%` <- magrittr::`%>%`
   . <- NULL
   for ( i in 1:n){

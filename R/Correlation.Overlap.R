@@ -8,13 +8,23 @@
 
 #' @export
 #' @importFrom stats cor
+#' @importFrom HiClimR fastCor
 
 
 CorrelationOverlap = function(Data, Overlap, method ){
-  COR = suppressMessages(suppressWarnings(stats::cor(t(Data), method = method,  use = "pairwise.complete.obs")))
+  if(method %in% c("pearson", "p")){
+    COR = suppressMessages(suppressWarnings(HiClimR::fastCor(t(Data), 
+                                                             nSplit = 10, 
+                                                             upperTri = FALSE)))
+  } else{
+    COR = suppressMessages(suppressWarnings(stats::cor(t(Data), 
+                                                       method = method,  
+                                                       use = "pairwise.complete.obs")))  
+  }
+  
   diag(COR) <- 0
   COR[is.na(COR)] = 0
-  Final_Correlation = subset(COR, row.names(COR) %in% Overlap)
-  return(Final_Correlation)
+  # Final_Correlation = subset(COR, row.names(COR) %in% Overlap)
+  return(COR)
 }
 

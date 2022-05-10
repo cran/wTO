@@ -4,11 +4,13 @@
 \name{Microarray_Expression2}
 \alias{Microarray_Expression2}
 \title{Microarray_Expression2}
-\format{data.frame 1000 lines, 18 columns.}
+\format{
+data.frame 1000 lines, 18 columns.
+}
 \usage{
-ExampledfExpression
+Microarray_Expression2
 }
 \description{
-ExampledfExpression data.frame containing expression data for 1000 genes and 18 individuals.
+Microarray_Expression2 data.frame containing expression data for 1000 genes and 18 individuals.
 }
 \keyword{datasets}

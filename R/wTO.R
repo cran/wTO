@@ -7,6 +7,7 @@
 #' @export
 #' @references Katja Nowick, Tim Gernat, Eivind Almaas and Lisa Stubbs (2009) <doi:10.1073/pnas.0911376106>
 #' @author Deisy Morselli Gysi <deisy at bioinf.uni-leipzig.de>
+#' @importFrom Rfast Crossprod transpose
 
 
 wTO = function(A,  sign = c("abs", "sign")){
@@ -15,8 +16,8 @@ wTO = function(A,  sign = c("abs", "sign")){
     A = abs(A)
   }
   A_TF = as.data.frame(subset(A, select = row.names(A)))
-  C = as.matrix(A) %*% t(A)
-
+  C = Rfast::Crossprod(A, Rfast::transpose(A))
+  
   W = C + A_TF ###
   K  = matrix(NA, nrow(A_TF), ncol(A_TF))
   KI = rowSums(abs(A), na.rm = T)

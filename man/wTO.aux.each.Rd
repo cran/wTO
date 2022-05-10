@@ -7,7 +7,7 @@
 wTO.aux.each(n, Data, Overlap, method, method_resampling, lag, ID)
 }
 \arguments{
-\item{n}{Number of bootstraps / reshuffles to be run for the estimatives of the "Threshold" or "pval".}
+\item{n}{Number of bootstraps / reshuffles to be run for the estimates of the "Threshold" or "pval".}
 
 \item{Data}{data.frame containing the count / expression data for the correlation.}
 
@@ -18,6 +18,6 @@ wTO.aux.each(n, Data, Overlap, method, method_resampling, lag, ID)
 \item{method_resampling}{method of the resampling. Bootstrap or Reshuffle. Bootstrap null hypothesis is that the wTO is random, and Reshuffle tests if the wTO is equal to zero.}
 }
 \description{
-wTO.aux.each calculte the wTO for each one of the resamplings.
+wTO.aux.each calculate the wTO for each one of the resamplings.
 }
 \keyword{internal}
