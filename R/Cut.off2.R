@@ -84,7 +84,7 @@ Cut.off = function(wTO_value, type, plot){
       
     }
     res <- try(PLOT(wTO_value))
-    if(methods::is(res)!= 'try-error'){
+    if(!methods::is(res, 'try-error')){
       res
     }
   }
