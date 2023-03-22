@@ -1,4 +1,3 @@
-
 #' @title wTO.aux.each
 #' @description wTO.aux.each calculate the wTO for each one of the resamplings.
 #' @keywords internal
@@ -55,8 +54,8 @@ wTO.aux.each = function (n, Data, Overlap, method, method_resampling, lag, ID){
   
   
   Saving = CorrelationOverlap(Data = real_Genes, Overlap = Overlap, method = method)
-  WTO_abs = wTO(A = Saving,  sign = "abs")
-  WTO_sig = wTO(A = Saving,  sign = "sign")
+  WTO_abs = wTO(A_TF  = Saving,  sign = "abs")
+  WTO_sig = wTO(A_TF = Saving,  sign = "sign")
   
   # message(".", appendLF = F)
   Cor_star = wTO.in.line(WTO_sig)

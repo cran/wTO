@@ -32,7 +32,7 @@ wTO.in.line <-function(d){
   # system.time(correlations<-cor(mydata,use="pairwise.complete.obs"))#get correlation matrix
   upperTriangle<-upper.tri(d, diag=F) #turn into a upper triangle
   d.upperTriangle<-d #take a copy of the original cor-mat
-  d.upperTriangle[!upperTriangle]<-NA#set everything not in upper triangle o NA
+  d.upperTriangle[!upperTriangle]<-NA#set everything not in upper triangle to NA
   d_melted<-data.table::as.data.table(stats::na.omit(reshape2::melt(as.matrix(d.upperTriangle), value.name ="correlationCoef"))) #use melt to reshape the matrix into triplets, na.omit to get rid of the NA rows
   names(d_melted)<-c("Node.1", "Node.2", "wTO")
 

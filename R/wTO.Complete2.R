@@ -129,8 +129,8 @@ wTO.Complete = function(k = 1 ,n = 100, Data , Overlap = row.names(Data),
   ## For the original data
   # real_Genes = Data
   Saving = CorrelationOverlap(Data = Data, Overlap = Overlap, method = method)
-  WTO_abs = wTO(A = Saving,  sign = "abs")
-  WTO_sign = wTO(A = Saving,  sign = "sign")
+  WTO_abs = wTO(A_TF  = Saving,  sign = "abs")
+  WTO_sign = wTO(A_TF = Saving,  sign = "sign")
   Cor_real = wTO.in.line(WTO_sign)
   Cor_real_abs = wTO.in.line(WTO_abs)
   names(Cor_real) = names(Cor_real_abs) <-c("Node.1", "Node.2", "wTO_0")

@@ -24,15 +24,14 @@
 #' @export
 #'
 #' @examples
-#'
+#' \dontrun{
 #'  X =  wTO.Complete( k =1, n = 5, Data = Microarray_Expression1,
-#'  Overlap = ExampleGRF$x, method = "p",  plot = FALSE)
+#'  Overlap = ExampleGRF$x[1:10], method = "p",  plot = FALSE)
 #' # Plot with the default aguments.
 #'  NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,
 #'  wTO = X$wTO$wTO_sign, cutoff = list(kind =
 #' "Threshold", value = 0.50))
 #'
-#'\dontrun{
 #' # Plotting just the edges with p-value < 0.05, with straight edges, nodes clustered,
 #' # no legend and mapipulation of the graph enabled.
 #'   NetVis(Node.1 = X$wTO$Node.1, Node.2 = X$wTO$Node.2,

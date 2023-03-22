@@ -4,10 +4,10 @@
 \alias{wTO}
 \title{wTO}
 \usage{
-wTO(A, sign = c("abs", "sign"))
+wTO(A_TF, sign = c("abs", "sign"))
 }
 \arguments{
-\item{A}{Is the weighted adjency matrix (correlation matrix).}
+\item{A_TF}{Is the weighted adjency matrix (correlation matrix).}
 
 \item{sign}{("abs", "sign") if the user wants to use the absolute correlation or the signed correlation.}
 }

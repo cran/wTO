@@ -40,8 +40,10 @@
 
 wTO.fast = function(Data, 
                     Overlap = row.names(Data), 
-                    method = 'p', sign = 'sign', 
-                    delta = 0.2, n = 10,
+                    method = 'p', 
+                    sign = 'sign', 
+                    delta = 0.2, 
+                    n = 10,
                     method_resampling = 'Bootstrap', lag = NULL, ID = NULL){
   Overlap = unique(as.character(Overlap))
   `%ni%` <- Negate(`%in%`)

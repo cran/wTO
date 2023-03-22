@@ -9,13 +9,17 @@
 #' @export
 #' @importFrom stats cor
 #' @importFrom HiClimR fastCor
+#' @importFrom Rfast transpose
 
 
 CorrelationOverlap = function(Data, Overlap, method ){
+  
+  Overlap = as.character(Overlap)
   if(method %in% c("pearson", "p")){
-    COR = suppressMessages(suppressWarnings(HiClimR::fastCor(t(Data), 
+    COR = suppressMessages(suppressWarnings(HiClimR::fastCor(t((as.matrix(Data))), 
                                                              nSplit = 10, 
-                                                             upperTri = FALSE)))
+                                                             upperTri = FALSE,  verbose = F)
+                                            ))
   } else{
     COR = suppressMessages(suppressWarnings(stats::cor(t(Data), 
                                                        method = method,  
@@ -25,6 +29,8 @@ CorrelationOverlap = function(Data, Overlap, method ){
   diag(COR) <- 0
   COR[is.na(COR)] = 0
   # Final_Correlation = subset(COR, row.names(COR) %in% Overlap)
-  return(COR)
+  # 
+  Final_Correlation = COR[row.names(COR) %in% Overlap, colnames(COR) %in% Overlap]
+  return(Final_Correlation)
 }
 
