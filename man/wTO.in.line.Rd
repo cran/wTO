@@ -11,8 +11,12 @@ wTO.in.line(d)
 }
 \value{
 the wTO matrix into a data.frame: Node1, Node2 and wTO.
+
+the wTO matrix into a data.frame: Node1, Node2 and wTO.
 }
 \description{
+Transforms a correlation matrix into the line format.
+
 Transforms a correlation matrix into the line format.
 }
 \author{

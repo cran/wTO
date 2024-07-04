@@ -1,7 +1,7 @@
-563a26ec15ef3b976d1a0fc9ec87e74d *DESCRIPTION
+349e08d8d68bfa725eb049a5b97ea102 *DESCRIPTION
 b735f73a3c3b67ff79374600518bcf35 *NAMESPACE
 5b831f370914fac11a7aecdb8ef758db *R/Correlation.Overlap.R
-94189ebc3276c5fd56f8a239b369e9ec *R/Cut.off2.R
+d964340a2b28e33692c236d0ecc15294 *R/Cut.off2.R
 afc341464d2b8d32548e5317ec1fa685 *R/ExampleGRF.R
 8e0168619ac2b7b545eb27d81baa5e03 *R/ExampledfExpression.R
 80548ea6e6c2940bc083fd556966c549 *R/ExampledfExpression2.R
@@ -14,9 +14,9 @@ cd292c81fcec536fd7aa66638cde5a75 *R/sample_ind.R
 066d0623dbdc3f3f417fd8dc6cd1df6a *R/wTO.R
 37c252ec63a3a2b6d8d3c8ce76c2bf54 *R/wTO.aux.each.R
 ae898ee7f80e8fd8b6d628c9a31e92b2 *R/wTO.export.R
-3e5316e16fd648f918caa2fc96568174 *R/wTO.in.line.R
+d9bdb9c26f893464e3966179b9c2636c *R/wTO.in.line.R
 60c51bfc6c04ba7aa0a9472f0f52c9bf *R/wTO.rep_measure.R
-22ecaa28576155a9eff3c066dbcac2e0 *R/wTOfast.R
+5614bbba47e8f5304c92d39dca18942e *R/wTOfast.R
 0b72bf9514d823e040019e5e8f9e3e96 *README.md
 90fb5cce412fcc2f63f2930862621058 *data/ExampleGRF.txt
 8d0a02b4059f77bc3d2f688b31dfedcc *data/Microarray_Expression1.txt
@@ -24,7 +24,7 @@ b91cc969bed1f4d546e572e4e19632a0 *data/Microarray_Expression2.txt
 c16fd85bab96c75d5ae5ffa614cff0fb *data/metagenomics_abundance.txt
 68538e5327322729e4442c551be14441 *inst/CITATION
 456fc33c708645bd0935ce077c5479cb *man/CorrelationOverlap.Rd
-fb2d013c1312da43e03377e139593111 *man/Cut.off.Rd
+149b592eb9c3f2028e6e9f5385f97165 *man/Cut.off.Rd
 06c750398ff3dfcb308c99abafc94265 *man/ExampleGRF.Rd
 9fb4b9b844d3454669ee7e35361da149 *man/Microarray_Expression1.Rd
 baffa1daa765af6ed8dc8b539dcdbdc6 *man/Microarray_Expression2.Rd
@@ -37,6 +37,6 @@ c76d0c6a6c273c8254942d57c7ee06c9 *man/NetVis.Rd
 4f2f5f1cbd61f31ba0d636a6ed5038e7 *man/wTO.Rd
 fad4abfb9f91f6f007b2da15de7e4b7a *man/wTO.aux.each.Rd
 059519e6a7f436babad7c028d569b619 *man/wTO.export.Rd
-7ab332691efa3ff1b8d23ca1e3323105 *man/wTO.fast.Rd
-2df92ba7edfd096a4f7617ff1dc59478 *man/wTO.in.line.Rd
+5bffc7d0d06d871fc404cc61630d647c *man/wTO.fast.Rd
+e64e230a976376278045bcda5a366673 *man/wTO.in.line.Rd
 2c4011bcb35413d7881269a86c6266e7 *man/wTO.rep_measure.Rd
